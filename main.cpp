@@ -1,6 +1,8 @@
 #include <iostream>
 #include "plocica.h"
 #include <SFML/Graphics.hpp>
+#include <vector>
+#include <algorithm>
 
 #define FONT_SIZE_BIG 100
 
@@ -10,20 +12,27 @@ using namespace std;
 
 int main()
 {
+    //izrada prozora
     sf::RenderWindow prozor;
     auto racunalo = sf::VideoMode::getDesktopMode();
     prozor.create(sf::VideoMode(DEFAULT_SIZE), "Continuo pravila");
     sf::Vector2i pozicija(racunalo.width / 2 - prozor.getSize().x / 2, racunalo.height / 2 - prozor.getSize().y / 2 * 3);
     prozor.setPosition(pozicija);
+
+    //potrebni alati na prozoru
     sf::Text naslov;
     sf::Text gumbText;
     sf::Font font;
     sf::Text pravila;
+
+    //ucitavanje fonta
     if (!font.loadFromFile("./Merriweather/Merriweather-Black.ttf"))
     {
         cout << "ERROR" << endl;
         system("pause");
     }
+
+    //napravimo naslov
     naslov.setFont(font);
     naslov.setString("Pravila Igre");
     naslov.setCharacterSize(FONT_SIZE_BIG);
@@ -36,6 +45,7 @@ int main()
     // pravila.setFillColor(sf::Color(255, 239, 222));
     // pravila.setPosition(sf::Vector2f(0.f, naslov.getLocalBounds().height * 4 / 3.f));
 
+    //napravimo gumb start koji se sastoji od texta i pravokutnika
     gumbText.setFont(font);
     gumbText.setString("Start");
     gumbText.setCharacterSize(FONT_SIZE_BIG);
@@ -46,6 +56,7 @@ int main()
     gumbStart.setFillColor(sf::Color(111, 78, 55));
     gumbStart.setPosition(sf::Vector2f(prozor.getSize().x / 2.f - gumbStart.getLocalBounds().width / 2.f, prozor.getSize().y * 1.f - naslov.getCharacterSize() * 2.f));
 
+    //bavimo se kursorom i ucitavamo kursor
     sf::Cursor ruka, strelica;
     if (!ruka.loadFromSystem(sf::Cursor::Hand))
     {
@@ -56,14 +67,20 @@ int main()
         cout << "Could not load arrow cursor" << endl;
     }
 
+    //koristit cemo varijablu u slucaju promjene velicine prozora
     bool changeProzor = false;
 
+    //generiramo svoje plocice
+    vector <plocica> plocice = generiraj();
+
     while (prozor.isOpen())
-    {
+    {   
+        //biramo pozicije na prozoru za gumb, mis
         sf::Event d;
         sf::Vector2i mousePos = sf::Mouse::getPosition(prozor);
         sf::Vector2i gumbPos(gumbStart.getPosition());
         sf::Vector2i gumbWiHi(gumbStart.getGlobalBounds().width, gumbStart.getGlobalBounds().height);
+
         while (prozor.pollEvent(d))
         {
             if (d.type == sf::Event::Closed)
@@ -71,6 +88,7 @@ int main()
                 prozor.close();
             }
 
+            //animacija da gumb mijenja boju ako dodemo misem do njega
             if (d.type == sf::Event::MouseMoved && !changeProzor)
             {
 
@@ -89,18 +107,29 @@ int main()
             }
         }
 
+        //otvaranje novog prozora i pocetak igranja Continuoa
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && mousePos.x > gumbPos.x && mousePos.x < gumbPos.x + gumbWiHi.x && mousePos.y > gumbPos.y && mousePos.y < gumbPos.y + gumbWiHi.y && !changeProzor)
         {
             changeProzor = true;
             prozor.create(sf::VideoMode(DEFAULT_SIZE), "Continuo", sf::Style::Fullscreen);
+            random_shuffle(plocice.begin(), plocice.end());
+            
         }
 
+        //s Esc cemo izlaziti van iz igrice ako ne zelimo zavrsiti partiju 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
         {
             sf::Vector2u sz(DEFAULT_SIZE);
             prozor.create(sf::VideoMode(DEFAULT_SIZE), "Continuo", sf::Style::Default);
             prozor.setPosition(pozicija);
         }
+
+        //F11 mijenja velicinu prozora
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::F11) && changeProzor) {
+            prozor.create(sf::VideoMode(DEFAULT_SIZE), "Continuo", sf::Style::Fullscreen);
+        }
+
+        //stvara prikaz prozora
         prozor.clear(sf::Color(255, 239, 222));
         if (!changeProzor)
         {
@@ -112,6 +141,7 @@ int main()
         }
         else
         {
+            prozor.clear(sf::Color::White);
         }
         prozor.display();
     }
