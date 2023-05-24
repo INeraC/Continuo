@@ -55,20 +55,25 @@ void plocica::ispisi()
     }
 }
 
-bool plocica::iste(plocica p){
-    int i,j;
+bool plocica::iste(plocica p)
+{
+    int i, j;
     bool iste = true;
     bool rotirane = true;
 
-    for (i=0; i<4; i++){
-        for (j=0; j<4; j++){
+    for (i = 0; i < 4; i++)
+    {
+        for (j = 0; j < 4; j++)
+        {
             if (polje[i][j] != p.polje[i][j])
                 iste = false;
         }
     }
     p.rotiraj();
-    for (i=0; i<4; i++){
-        for (j=0; j<4; j++){
+    for (i = 0; i < 4; i++)
+    {
+        for (j = 0; j < 4; j++)
+        {
             if (polje[i][j] != p.polje[i][j])
                 rotirane = false;
         }
@@ -76,9 +81,8 @@ bool plocica::iste(plocica p){
 
     if (rotirane || iste)
         return true;
-    
-    return false;
 
+    return false;
 }
 
 vector<plocica> generiraj()
@@ -86,35 +90,40 @@ vector<plocica> generiraj()
     vector<plocica> ret;
     int i, j, k;
 
-    //generiranje plocica s dvije boje
+    // generiranje plocica s dvije boje
 
-    for (i=1; i<5; i++ ){
-        for (j=1; j<5; j++){
-            if (i>=j)
+    for (i = 1; i < 5; i++)
+    {
+        for (j = 1; j < 5; j++)
+        {
+            if (i >= j)
                 continue;
-            
-            ret.push_back(plocica(i,j,j,i));
-            
+
+            ret.push_back(plocica(i, j, j, i));
         }
     }
 
-    for (i=1; i<5; i++ ){
-        for (j=1; j<5; j++){
+    for (i = 1; i < 5; i++)
+    {
+        for (j = 1; j < 5; j++)
+        {
 
-            //slucaj kada su sva cetiri vrha obojana istom bojom
-            for (k=1; k<5; k++){
-                if (j>=k || j==i || k==i)
+            // slucaj kada su sva cetiri vrha obojana istom bojom
+            for (k = 1; k < 5; k++)
+            {
+                if (j >= k || j == i || k == i)
                     continue;
-                plocica p (i,j,i,k);
+                plocica p(i, j, i, k);
                 ret.push_back(p);
             }
 
-            //slucaj kada su vrhovi obojani razlicitim bojama
-            for (k=1; k<5; k++){
-                if (i==j || i==k || j==k)
+            // slucaj kada su vrhovi obojani razlicitim bojama
+            for (k = 1; k < 5; k++)
+            {
+                if (i == j || i == k || j == k)
                     continue;
-                
-                ret.push_back(plocica(i,k,j,i));
+
+                ret.push_back(plocica(i, k, j, i));
             }
         }
     }
@@ -128,11 +137,10 @@ vector<plocica> generiraj()
     //             cout<<"Error"<<endl;
     //         }
     //     }
-    // }
+
+    random_shuffle(ret.begin(), ret.end());
     return ret;
-
 }
-
 
 // int main(){
 //     vector<plocica> pl;

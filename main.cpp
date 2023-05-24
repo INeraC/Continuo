@@ -72,10 +72,15 @@ int main()
 
     // generiramo svoje plocice
     vector<plocica> plocice = generiraj();
-    grid polje (plocice.back());
+    grid polje(plocice.back());
     plocice.pop_back();
-    polje.ispisiPolje();
-    
+    // for (int i = 0; i < plocice.size(); i++)
+    // {
+    //     plocice[i].ispisi();
+    //     cout << endl;
+    // }
+    polje.ispisiPolje(165, 165);
+
     while (prozor.isOpen())
     {
         // biramo pozicije na prozoru za gumb, mis
@@ -115,7 +120,6 @@ int main()
         {
             changeProzor = true;
             prozor.create(sf::VideoMode(DEFAULT_SIZE), "Continuo", sf::Style::Fullscreen);
-            random_shuffle(plocice.begin(), plocice.end());
         }
 
         // s Esc cemo izlaziti van iz igrice ako ne zelimo zavrsiti partiju
