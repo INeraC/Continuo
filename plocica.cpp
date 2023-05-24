@@ -119,16 +119,16 @@ vector<plocica> generiraj()
         }
     }
 
-    for(i = 0; i < ret.size();i++){
-        for( j = 0; j < ret.size(); j++){
-            if( i== j)
-                continue;
+    // for(i = 0; i < ret.size();i++){
+    //     for( j = 0; j < ret.size(); j++){
+    //         if( i== j)
+    //             continue;
 
-            if(ret[i].iste(ret[j])){
-                cout<<"Error"<<endl;
-            }
-        }
-    }
+    //         if(ret[i].iste(ret[j])){
+    //             cout<<"Error"<<endl;
+    //         }
+    //     }
+    // }
     return ret;
 
 }
