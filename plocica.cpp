@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include "plocica.h"
 #include <vector>
+#include <time.h>
 
 #define CRVENA 1
 #define PLAVA 2
@@ -87,6 +88,7 @@ bool plocica::iste(plocica p)
 
 vector<plocica> generiraj()
 {
+    srand(unsigned(time(NULL)));
     vector<plocica> ret;
     int i, j, k;
 
