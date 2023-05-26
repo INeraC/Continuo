@@ -49,9 +49,10 @@ void grid::ispisiGrid(int x, int y)
 void grid::crtajGrid(sf::RenderWindow &prozor, int x, int y, int velicina)
 {
     int i, j;
-    unsigned stranica = prozor.getSize().y / (velicina);
-    unsigned offset = (prozor.getSize().x - prozor.getSize().y) / 2;
-    cout << prozor.getSize().y << " " << prozor.getSize().x<< endl;
+    float stranica = 1.f * prozor.getSize().y / velicina;
+    float offsetx = (prozor.getSize().x - prozor.getSize().y) / 2;
+    float offsety = 20;
+    // cout << prozor.getSize().y << " " << prozor.getSize().x << " " << stranica << endl;
     for (i = x; i < x + velicina; i++)
     {
         for (j = y; j < y + velicina; j++)
@@ -62,7 +63,7 @@ void grid::crtajGrid(sf::RenderWindow &prozor, int x, int y, int velicina)
                 element.setFillColor(sf::Color::White);
                 element.setOutlineColor(sf::Color::Black);
                 element.setOutlineThickness(1.0);
-                element.setPosition(sf::Vector2f(stranica * (i - x) + offset, stranica * (j - y)));
+                element.setPosition(sf::Vector2f(stranica * (i - x) + offsetx, stranica * (j - y)));
                 prozor.draw(element);
             }
             else if (polje[i][j] == Crvena)
@@ -70,7 +71,7 @@ void grid::crtajGrid(sf::RenderWindow &prozor, int x, int y, int velicina)
                 element.setFillColor(sf::Color::Red);
                 element.setOutlineColor(sf::Color::Black);
                 element.setOutlineThickness(1.0);
-                element.setPosition(sf::Vector2f(stranica * (i - x) + offset, stranica * (j - y)));
+                element.setPosition(sf::Vector2f(stranica * (i - x) + offsetx, stranica * (j - y)));
                 prozor.draw(element);
             }
             else if (polje[i][j] == Plava)
@@ -78,7 +79,7 @@ void grid::crtajGrid(sf::RenderWindow &prozor, int x, int y, int velicina)
                 element.setFillColor(sf::Color::Blue);
                 element.setOutlineColor(sf::Color::Black);
                 element.setOutlineThickness(1.0);
-                element.setPosition(sf::Vector2f(stranica * (i-x) + offset, stranica * (j-y)));
+                element.setPosition(sf::Vector2f(stranica * (i - x) + offsetx, stranica * (j - y)));
                 prozor.draw(element);
             }
             else if (polje[i][j] == Zelena)
@@ -86,7 +87,7 @@ void grid::crtajGrid(sf::RenderWindow &prozor, int x, int y, int velicina)
                 element.setFillColor(sf::Color::Green);
                 element.setOutlineColor(sf::Color::Black);
                 element.setOutlineThickness(1.0);
-                element.setPosition(sf::Vector2f(stranica * (i-x) + offset, stranica * (j-y)));
+                element.setPosition(sf::Vector2f(stranica * (i - x) + offsetx, stranica * (j - y)));
                 prozor.draw(element);
             }
             else if (polje[i][j] == Zuta)
@@ -94,7 +95,7 @@ void grid::crtajGrid(sf::RenderWindow &prozor, int x, int y, int velicina)
                 element.setFillColor(sf::Color::Yellow);
                 element.setOutlineColor(sf::Color::Black);
                 element.setOutlineThickness(1.0);
-                element.setPosition(sf::Vector2f(stranica * (i-x) + offset, stranica * (j-y)));
+                element.setPosition(sf::Vector2f(stranica * (i - x) + offsetx, stranica * (j - y)));
                 prozor.draw(element);
             }
         }

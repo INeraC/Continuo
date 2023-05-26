@@ -6,7 +6,9 @@
 #include <algorithm>
 
 #define FONT_SIZE_BIG 100
-#define DEFAULT_SIZE sf::VideoMode::getDesktopMode().width * 2 / 3, sf::VideoMode::getDesktopMode().height * 4 / 5
+#define DEFAULT_SIZE_PRAVILA sf::VideoMode::getDesktopMode().width * 2 / 3, sf::VideoMode::getDesktopMode().height * 4 / 5
+#define DEFAULT_SIZE_NOT_FULL_SCREEN sf::VideoMode::getDesktopMode().height * 4 / 5, sf::VideoMode::getDesktopMode().height * 4 / 5
+#define DEFAULT_SIZE_FULL_SCREEN sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height
 
 using namespace std;
 
@@ -15,7 +17,7 @@ int main()
     // izrada prozora
     sf::RenderWindow prozor;
     auto racunalo = sf::VideoMode::getDesktopMode();
-    prozor.create(sf::VideoMode(DEFAULT_SIZE), "Continuo pravila");
+    prozor.create(sf::VideoMode(DEFAULT_SIZE_PRAVILA), "Continuo pravila");
     sf::Vector2i pozicija(racunalo.width / 2 - prozor.getSize().x / 2, racunalo.height / 2 - prozor.getSize().y / 2 * 3);
     prozor.setPosition(pozicija);
 
@@ -79,8 +81,7 @@ int main()
     //     plocice[i].ispisi();
     //     cout << endl;
     // }
-    //polje.ispisiGrid(165, 165);
-
+    // polje.ispisiGrid(165, 165);
 
     while (prozor.isOpen())
     {
@@ -114,27 +115,32 @@ int main()
                     prozor.setMouseCursor(strelica);
                 }
             }
+
+            if (d.type == sf::Event::MouseMoved && changeProzor)
+            {
+                // cout << mousePos.x << " " << mousePos.y << endl;
+            }
         }
 
         // otvaranje novog prozora i pocetak igranja Continuoa
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && mousePos.x > gumbPos.x && mousePos.x < gumbPos.x + gumbWiHi.x && mousePos.y > gumbPos.y && mousePos.y < gumbPos.y + gumbWiHi.y && !changeProzor)
         {
             changeProzor = true;
-            prozor.create(sf::VideoMode(DEFAULT_SIZE), "Continuo", sf::Style::Fullscreen);
+            prozor.create(sf::VideoMode(DEFAULT_SIZE_FULL_SCREEN), "Continuo", sf::Style::Fullscreen);
         }
 
         // s Esc cemo izlaziti van iz igrice ako ne zelimo zavrsiti partiju
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
         {
-            sf::Vector2u sz(DEFAULT_SIZE);
-            prozor.create(sf::VideoMode(DEFAULT_SIZE), "Continuo", sf::Style::Default);
+            sf::Vector2u sz(DEFAULT_SIZE_NOT_FULL_SCREEN);
+            prozor.create(sf::VideoMode(DEFAULT_SIZE_NOT_FULL_SCREEN), "Continuo", sf::Style::Close | sf::Style::Titlebar);
             prozor.setPosition(pozicija);
         }
 
         // F11 mijenja velicinu prozora
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::F11) && changeProzor)
         {
-            prozor.create(sf::VideoMode(DEFAULT_SIZE), "Continuo", sf::Style::Fullscreen);
+            prozor.create(sf::VideoMode(DEFAULT_SIZE_FULL_SCREEN), "Continuo", sf::Style::Fullscreen);
         }
 
         // stvara prikaz prozora
@@ -150,7 +156,7 @@ int main()
         else
         {
             prozor.clear(sf::Color::White);
-            polje.crtajGrid(prozor,50,50,150);
+            polje.crtajGrid(prozor, 150, 150, 50);
         }
         prozor.display();
     }
