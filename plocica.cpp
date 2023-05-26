@@ -3,7 +3,6 @@
 #include "plocica.h"
 #include <vector>
 #include <time.h>
-
 #define CRVENA 1
 #define PLAVA 2
 #define ZUTA 3

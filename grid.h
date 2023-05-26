@@ -15,7 +15,7 @@ public:
     grid(plocica pl);
     void postaviPlocicu(int x, int y, plocica pl);
     void ispisiGrid(int x, int y);
-    void crtajGrid(sf::RenderWindow &prozor, int x, int y, int velicina);
+    sf::Vector2f crtajGrid(sf::RenderWindow &prozor, int x, int y, int velicina);
 };
 
 #endif

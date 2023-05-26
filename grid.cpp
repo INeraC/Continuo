@@ -46,12 +46,13 @@ void grid::ispisiGrid(int x, int y)
 
 // funkcija koja prima koordinate gornjeg lijevog te donjeg desnog vrha kvadrata koji ce biti prikazan i prozor te na tom prozoru crta taj dio grida
 
-void grid::crtajGrid(sf::RenderWindow &prozor, int x, int y, int velicina)
+sf::Vector2f grid::crtajGrid(sf::RenderWindow &prozor, int x, int y, int velicina)
 {
+
     int i, j;
     float stranica = 1.f * prozor.getSize().y / velicina;
     float offsetx = (prozor.getSize().x - prozor.getSize().y) / 2;
-    float offsety = 20;
+    sf::Vector2f ret(stranica, offsetx);
     // cout << prozor.getSize().y << " " << prozor.getSize().x << " " << stranica << endl;
     for (i = x; i < x + velicina; i++)
     {
@@ -100,4 +101,5 @@ void grid::crtajGrid(sf::RenderWindow &prozor, int x, int y, int velicina)
             }
         }
     }
+    return ret;
 }

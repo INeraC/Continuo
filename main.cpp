@@ -83,6 +83,9 @@ int main()
     // }
     // polje.ispisiGrid(165, 165);
 
+    int xpos = 141, ypos = 141, velcina = 50;
+    sf::Vector2f gridStats;
+
     while (prozor.isOpen())
     {
         // biramo pozicije na prozoru za gumb, mis
@@ -156,7 +159,7 @@ int main()
         else
         {
             prozor.clear(sf::Color::White);
-            polje.crtajGrid(prozor, 150, 150, 50);
+            gridStats = polje.crtajGrid(prozor, xpos, ypos, velcina);
         }
         prozor.display();
     }
