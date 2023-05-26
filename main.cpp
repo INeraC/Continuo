@@ -1,6 +1,6 @@
 #include <iostream>
 #include "plocica.h"
-#include "polje.h"
+#include "grid.h"
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <algorithm>
@@ -79,7 +79,8 @@ int main()
     //     plocice[i].ispisi();
     //     cout << endl;
     // }
-    polje.ispisiPolje(165, 165);
+    //polje.ispisiGrid(165, 165);
+
 
     while (prozor.isOpen())
     {
@@ -149,6 +150,7 @@ int main()
         else
         {
             prozor.clear(sf::Color::White);
+            polje.crtajGrid(prozor,50,50,150);
         }
         prozor.display();
     }
