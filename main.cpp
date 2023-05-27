@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <algorithm>
+#include <unistd.h>
 
 #define FONT_SIZE_BIG 100
 #define DEFAULT_SIZE_PRAVILA sf::VideoMode::getDesktopMode().width * 2 / 3, sf::VideoMode::getDesktopMode().height * 4 / 5
@@ -154,6 +155,7 @@ int main()
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)){
             tr_plocica.rotiraj();
+            usleep(100);
         }
 
         // stvara prikaz prozora
