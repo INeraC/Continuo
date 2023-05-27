@@ -152,6 +152,10 @@ int main()
             prozor.create(sf::VideoMode(DEFAULT_SIZE_FULL_SCREEN), "Continuo", sf::Style::Fullscreen);
         }
 
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)){
+            tr_plocica.rotiraj();
+        }
+
         // stvara prikaz prozora
         prozor.clear(sf::Color(255, 239, 222));
         if (!changeProzor)
