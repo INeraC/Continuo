@@ -83,8 +83,14 @@ int main()
     // }
     // polje.ispisiGrid(165, 165);
 
+
+    //inicijalizacija pocetnog pogleda
     int xpos = 141, ypos = 141, velcina = 50;
     sf::Vector2f gridStats;
+
+    //uzimanje prve plocice
+    plocica tr_plocica = plocice.back();
+    plocice.pop_back();
 
     while (prozor.isOpen())
     {
@@ -160,6 +166,7 @@ int main()
         {
             prozor.clear(sf::Color::White);
             gridStats = polje.crtajGrid(prozor, xpos, ypos, velcina);
+            tr_plocica.crtajPlocicu(prozor, gridStats, mousePos);
         }
         prozor.display();
     }

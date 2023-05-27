@@ -14,6 +14,7 @@ public:
     void rotiraj();
     void ispisi();
     bool iste (plocica p);
+    bool crtajPlocicu (sf::RenderWindow &prozor, sf::Vector2f &gridStats, sf::Vector2i &mousePos);
 };
 
 vector<plocica> generiraj();

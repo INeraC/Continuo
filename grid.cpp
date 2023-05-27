@@ -62,43 +62,29 @@ sf::Vector2f grid::crtajGrid(sf::RenderWindow &prozor, int x, int y, int velicin
             if (polje[i][j] == 0)
             {
                 element.setFillColor(sf::Color::White);
-                element.setOutlineColor(sf::Color::Black);
-                element.setOutlineThickness(1.0);
-                element.setPosition(sf::Vector2f(stranica * (i - x) + offsetx, stranica * (j - y)));
-                prozor.draw(element);
             }
             else if (polje[i][j] == Crvena)
             {
                 element.setFillColor(sf::Color::Red);
-                element.setOutlineColor(sf::Color::Black);
-                element.setOutlineThickness(1.0);
-                element.setPosition(sf::Vector2f(stranica * (i - x) + offsetx, stranica * (j - y)));
-                prozor.draw(element);
+
             }
             else if (polje[i][j] == Plava)
             {
                 element.setFillColor(sf::Color::Blue);
-                element.setOutlineColor(sf::Color::Black);
-                element.setOutlineThickness(1.0);
-                element.setPosition(sf::Vector2f(stranica * (i - x) + offsetx, stranica * (j - y)));
-                prozor.draw(element);
             }
             else if (polje[i][j] == Zelena)
             {
                 element.setFillColor(sf::Color::Green);
-                element.setOutlineColor(sf::Color::Black);
-                element.setOutlineThickness(1.0);
-                element.setPosition(sf::Vector2f(stranica * (i - x) + offsetx, stranica * (j - y)));
-                prozor.draw(element);
+
             }
             else if (polje[i][j] == Zuta)
             {
                 element.setFillColor(sf::Color::Yellow);
-                element.setOutlineColor(sf::Color::Black);
-                element.setOutlineThickness(1.0);
-                element.setPosition(sf::Vector2f(stranica * (i - x) + offsetx, stranica * (j - y)));
-                prozor.draw(element);
             }
+            element.setOutlineColor(sf::Color::Black);
+            element.setOutlineThickness(1.0);
+            element.setPosition(sf::Vector2f(stranica * (i - x) + offsetx, stranica * (j - y)));
+            prozor.draw(element);
         }
     }
     return ret;

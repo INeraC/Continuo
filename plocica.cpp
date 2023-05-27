@@ -3,10 +3,11 @@
 #include "plocica.h"
 #include <vector>
 #include <time.h>
-#define CRVENA 1
-#define PLAVA 2
-#define ZUTA 3
-#define ZELENA 4
+
+#define Crvena 1
+#define Plava 2
+#define Zelena 3
+#define Zuta 4
 
 using namespace std;
 
@@ -141,6 +142,49 @@ vector<plocica> generiraj()
 
     random_shuffle(ret.begin(), ret.end());
     return ret;
+}
+
+//crtaj plocicu s obzirom na poziciju misa
+bool plocica::crtajPlocicu (sf::RenderWindow &prozor, sf::Vector2f &gridStats, sf::Vector2i &mousePos){
+    int i,j;
+    sf::Vector2f pozicijaBase ( mousePos.x - 2.5f*gridStats.x, mousePos.y - 1.5f*gridStats.x);
+
+    if (mousePos.x - 0.5f*gridStats.x < gridStats.y || mousePos.x + 0.5f*gridStats.x > prozor.getSize().x - gridStats.y)
+        return false;
+
+    for(i=0; i<4; i++){
+        for (j=0; j<4; j++){
+            sf::Vector2f pozicija (pozicijaBase.x + i*gridStats.x, pozicijaBase.y + j*gridStats.x);
+
+            if (pozicija.x < gridStats.y || pozicija.x > prozor.getSize().x - gridStats.y)
+                continue;
+
+            sf::RectangleShape element(sf::Vector2f(gridStats.x, gridStats.x));
+
+            if (polje[i][j] == Crvena)
+            {
+                element.setFillColor(sf::Color::Red);
+            }
+            else if (polje[i][j] == Plava)
+            {
+                element.setFillColor(sf::Color::Blue);
+            }
+            else if (polje[i][j] == Zelena)
+            {
+                element.setFillColor(sf::Color::Green);
+            }
+            else if (polje[i][j] == Zuta)
+            {
+                element.setFillColor(sf::Color::Yellow);
+            }
+
+            element.setOutlineColor(sf::Color::Black);
+            element.setOutlineThickness(1.0);
+            element.setPosition(pozicija);
+            prozor.draw(element);
+        }
+    }
+    return true;
 }
 
 // int main(){
