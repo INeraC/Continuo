@@ -84,12 +84,11 @@ int main()
     // }
     // polje.ispisiGrid(165, 165);
 
-
-    //inicijalizacija pocetnog pogleda
+    // inicijalizacija pocetnog pogleda
     int xpos = 141, ypos = 141, velcina = 50;
     sf::Vector2f gridStats;
 
-    //uzimanje prve plocice
+    // uzimanje prve plocice
     plocica tr_plocica = plocice.back();
     plocice.pop_back();
 
@@ -125,10 +124,9 @@ int main()
                     prozor.setMouseCursor(strelica);
                 }
             }
-
+            // provjera je li plocica u poziciji za polaganje na polje
             if (d.type == sf::Event::MouseMoved && changeProzor)
             {
-                // cout << mousePos.x << " " << mousePos.y << endl;
             }
         }
 
@@ -152,10 +150,17 @@ int main()
         {
             prozor.create(sf::VideoMode(DEFAULT_SIZE_FULL_SCREEN), "Continuo", sf::Style::Fullscreen);
         }
-
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)){
+        // plocica se rotira
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
+        {
+            while (usleep(100))
+                ;
             tr_plocica.rotiraj();
-            usleep(100);
+        }
+
+        // stavljanje plocice na polje
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+        {
         }
 
         // stvara prikaz prozora

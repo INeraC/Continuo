@@ -66,7 +66,6 @@ sf::Vector2f grid::crtajGrid(sf::RenderWindow &prozor, int x, int y, int velicin
             else if (polje[i][j] == Crvena)
             {
                 element.setFillColor(sf::Color::Red);
-
             }
             else if (polje[i][j] == Plava)
             {
@@ -75,7 +74,6 @@ sf::Vector2f grid::crtajGrid(sf::RenderWindow &prozor, int x, int y, int velicin
             else if (polje[i][j] == Zelena)
             {
                 element.setFillColor(sf::Color::Green);
-
             }
             else if (polje[i][j] == Zuta)
             {
@@ -88,4 +86,8 @@ sf::Vector2f grid::crtajGrid(sf::RenderWindow &prozor, int x, int y, int velicin
         }
     }
     return ret;
+}
+
+bool grid::provjeriPoziciju(sf::Vector2i &mousePos, sf::Vector2i &gridStats, int xPos, int yPos)
+{
 }
