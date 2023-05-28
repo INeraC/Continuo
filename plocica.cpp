@@ -144,17 +144,20 @@ vector<plocica> generiraj()
     return ret;
 }
 
-//crtaj plocicu s obzirom na poziciju misa
-bool plocica::crtajPlocicu (sf::RenderWindow &prozor, sf::Vector2f &gridStats, sf::Vector2i &mousePos){
-    int i,j;
-    sf::Vector2f pozicijaBase ( mousePos.x - 2.5f*gridStats.x, mousePos.y - 1.5f*gridStats.x);
+// crtaj plocicu s obzirom na poziciju misa
+bool plocica::crtajPlocicu(sf::RenderWindow &prozor, sf::Vector2f &gridStats, sf::Vector2i &mousePos)
+{
+    int i, j;
+    sf::Vector2f pozicijaBase(mousePos.x - 2.5f * gridStats.x, mousePos.y - 1.5f * gridStats.x);
 
-    if (mousePos.x - 0.5f*gridStats.x < gridStats.y || mousePos.x + 0.5f*gridStats.x > prozor.getSize().x - gridStats.y)
+    if (mousePos.x - 0.5f * gridStats.x < gridStats.y || mousePos.x + 0.5f * gridStats.x > prozor.getSize().x - gridStats.y)
         return false;
 
-    for(i=0; i<4; i++){
-        for (j=0; j<4; j++){
-            sf::Vector2f pozicija (pozicijaBase.x + i*gridStats.x, pozicijaBase.y + j*gridStats.x);
+    for (i = 0; i < 4; i++)
+    {
+        for (j = 0; j < 4; j++)
+        {
+            sf::Vector2f pozicija(pozicijaBase.x + i * gridStats.x, pozicijaBase.y + j * gridStats.x);
 
             if (pozicija.x < gridStats.y || pozicija.x > prozor.getSize().x - gridStats.y)
                 continue;
@@ -185,6 +188,18 @@ bool plocica::crtajPlocicu (sf::RenderWindow &prozor, sf::Vector2f &gridStats, s
         }
     }
     return true;
+}
+
+// crtaj obrub plocice
+
+void plocica::crtajRub(sf::RenderWindow &prozor, sf::Vector2f &gridStats, sf::Vector2i &mousePos)
+{
+    sf::Vector2f pozicijaBase(mousePos.x - 2.5f * gridStats.x, mousePos.y - 1.5f * gridStats.x);
+    sf::RectangleShape obrub(sf::Vector2f(gridStats.x * 4, gridStats.x * 4));
+    obrub.setOutlineColor(sf::Color::Black);
+    obrub.setOutlineThickness(3.0);
+    obrub.setPosition(pozicijaBase);
+    prozor.draw(obrub);
 }
 
 // int main(){

@@ -13,8 +13,9 @@ public:
     plocica(int lijevi_kut, int lijevi_segment, int desni_kut, int desni_segment);
     void rotiraj();
     void ispisi();
-    bool iste (plocica p);
-    bool crtajPlocicu (sf::RenderWindow &prozor, sf::Vector2f &gridStats, sf::Vector2i &mousePos);
+    bool iste(plocica p);
+    bool crtajPlocicu(sf::RenderWindow &prozor, sf::Vector2f &gridStats, sf::Vector2i &mousePos);
+    void crtajRub(sf::RenderWindow &prozor, sf::Vector2f &gridStats, sf::Vector2i &mousePos);
 };
 
 vector<plocica> generiraj();

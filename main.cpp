@@ -71,22 +71,13 @@ int main()
     }
 
     // koristit cemo varijablu u slucaju promjene velicine prozora
-    bool changeProzor = false;
+    bool changeProzor = false, crtajObrub = false, krajIgre = false;
 
-    // generiramo svoje plocice
+    // generiramo svoje plocice i  konstruktorom inicijaliziramo pocetni pogled
     vector<plocica> plocice = generiraj();
-    grid polje(plocice.back());
+    grid polje(plocice.back(), 141, 141, 50);
     plocice.pop_back();
-    // for (int i = 0; i < plocice.size(); i++)
-    // {
-    //     plocice[i].ispisi();
-    //     cout << endl;
-    // }
-    // polje.ispisiGrid(165, 165);
-
-    // inicijalizacija pocetnog pogleda
-    int xpos = 141, ypos = 141, velcina = 50;
-    sf::Vector2f gridStats;
+    sf::Vector2f gridStats(-1.0f, -1.0f);
 
     // uzimanje prve plocice
     plocica tr_plocica = plocice.back();
@@ -125,8 +116,26 @@ int main()
                 }
             }
             // provjera je li plocica u poziciji za polaganje na polje
-            if (d.type == sf::Event::MouseMoved && changeProzor)
+            if (d.type == sf::Event::MouseMoved && changeProzor && polje.provjeriPoziciju(mousePos, gridStats))
             {
+                crtajObrub = true;
+            }
+            else
+            {
+                crtajObrub = false;
+            }
+
+            // provjera koristenja kotacica za zoomiranje polja
+            if (d.type == sf::Event::MouseWheelMoved)
+            {
+                if (d.mouseWheel.delta < 0)
+                {
+                    polje.zoomOut();
+                }
+                if (d.mouseWheel.delta > 0)
+                {
+                    polje.zoomIn();
+                }
             }
         }
 
@@ -159,15 +168,38 @@ int main()
         }
 
         // stavljanje plocice na polje
-        if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && polje.provjeriPoziciju(mousePos, gridStats))
         {
+            sf::Vector2i koordinate = polje.getKoordinate(mousePos, gridStats);
+            polje.postaviPlocicu(koordinate.x + 2, koordinate.y + 1, tr_plocica);
+            tr_plocica = plocice.back();
+            plocice.pop_back();
         }
 
-        // stvara prikaz prozora
-        prozor.clear(sf::Color(255, 239, 222));
-        if (!changeProzor)
+        // pomicanje ekrana
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
         {
-
+            polje.moveDown();
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+        {
+            polje.moveUp();
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+        {
+            polje.moveLeft();
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+        {
+            polje.moveRight();
+        }
+        // stvara prikaz prozora
+        if (krajIgre)
+        {
+        }
+        else if (!changeProzor)
+        {
+            prozor.clear(sf::Color(255, 239, 222));
             prozor.draw(naslov);
             prozor.draw(gumbStart);
             prozor.draw(gumbText);
@@ -176,7 +208,9 @@ int main()
         else
         {
             prozor.clear(sf::Color::White);
-            gridStats = polje.crtajGrid(prozor, xpos, ypos, velcina);
+            gridStats = polje.crtajGrid(prozor);
+            if (crtajObrub)
+                tr_plocica.crtajRub(prozor, gridStats, mousePos);
             tr_plocica.crtajPlocicu(prozor, gridStats, mousePos);
         }
         prozor.display();

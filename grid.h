@@ -9,20 +9,31 @@ class grid
 {
     static const int velicina_polja = 332;
     int polje[velicina_polja][velicina_polja] = {0};
-    int velcina;
+    int velicina;
     sf::Vector2i pozicija;
 
 public:
     grid();
     grid(plocica pl);
     grid(plocica pl, int x, int y, int velicina);
+
     sf::Vector2i getPosition();
     int getVelicina();
+    void setVelicina(int brKockica);
+    void setPozicija(sf::Vector2i pocetna_pozicija);
 
     void postaviPlocicu(int x, int y, plocica pl);
     void ispisiGrid(int x, int y);
-    sf::Vector2f crtajGrid(sf::RenderWindow &prozor, int x, int y, int velicina);
-    bool provjeriPoziciju(sf::Vector2i &mousePos, sf::Vector2i &gridStats, int xPos, int yPos);
+    sf::Vector2f crtajGrid(sf::RenderWindow &prozor);
+    bool provjeriPoziciju(sf::Vector2i &mousePos, sf::Vector2f &gridStats);
+    sf::Vector2i getKoordinate(sf::Vector2i &mousePos, sf::Vector2f &gridtats);
+
+    void zoomIn();
+    void zoomOut();
+    void moveLeft();
+    void moveRight();
+    void moveUp();
+    void moveDown();
 };
 
 #endif
