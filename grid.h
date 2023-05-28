@@ -9,12 +9,16 @@ class grid
 {
     static const int velicina_polja = 332;
     int polje[velicina_polja][velicina_polja] = {0};
-    int xPoc, yPoc, velcina;
+    int velcina;
+    sf::Vector2i pozicija;
 
 public:
     grid();
     grid(plocica pl);
     grid(plocica pl, int x, int y, int velicina);
+    sf::Vector2i getPosition();
+    int getVelicina();
+
     void postaviPlocicu(int x, int y, plocica pl);
     void ispisiGrid(int x, int y);
     sf::Vector2f crtajGrid(sf::RenderWindow &prozor, int x, int y, int velicina);

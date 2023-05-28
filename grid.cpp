@@ -13,7 +13,7 @@ grid::grid() {}
 void grid::postaviPlocicu(int x, int y, plocica pl)
 {
     int i, j, bx = 0, by = 0;
-    for (i = x - 1; i < x + 3; i++)
+    for (i = x -2 ; i < x + 2; i++)
     {
         for (j = y - 1; j < y + 3; j++)
         {
@@ -27,7 +27,7 @@ void grid::postaviPlocicu(int x, int y, plocica pl)
 
 grid::grid(plocica pl)
 {
-    postaviPlocicu(165, 165, pl);
+    postaviPlocicu(166, 165, pl);
 }
 
 void grid::ispisiGrid(int x, int y)
@@ -86,8 +86,4 @@ sf::Vector2f grid::crtajGrid(sf::RenderWindow &prozor, int x, int y, int velicin
         }
     }
     return ret;
-}
-
-bool grid::provjeriPoziciju(sf::Vector2i &mousePos, sf::Vector2i &gridStats, int xPos, int yPos)
-{
 }
