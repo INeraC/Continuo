@@ -82,12 +82,12 @@ int grid::postaviPlocicu(int x, int y, plocica pl)
         // provjera lijevo
         if (polje[i][y - 3] && polje[i][y - 3] == polje[i][y - 2])
         {
-            sum += 1 + dfs(i, y - 2, polje[i][y-3]);
+            sum += dfs(i, y - 2, polje[i][y - 3]);
         }
         // provejera desno
         if (polje[i][y + 2] && polje[i][y + 2] == polje[i][y + 1])
         {
-            sum += 1 + dfs(i, y + 1, polje[i][y+2]);
+            sum += dfs(i, y + 1, polje[i][y + 2]);
         }
     }
 
@@ -98,17 +98,17 @@ int grid::postaviPlocicu(int x, int y, plocica pl)
         // provjera gore
         if (polje[x - 2][j] && polje[x - 2][j] == polje[x - 1][j] && !visited[x - 1][j])
         {
-            sum += 1 + dfs(x - 1, j, polje [x-1][j]);
+            sum += dfs(x - 1, j, polje[x - 1][j]);
         }
         // provjera dolje
         if (polje[x + 3][j] && polje[x + 3][j] == polje[x + 2][j] && !visited[x + 2][j])
         {
-            sum += 1 + dfs(x + 2, j, polje [x+2][j]);
+            sum += dfs(x + 2, j, polje[x + 2][j]);
         }
     }
 }
 
-//ne moramo li pamtiti boju za koju radimo dfs
+// ne moramo li pamtiti boju za koju radimo dfs
 
 int grid::dfs(int x, int y, int boja)
 {
@@ -117,12 +117,12 @@ int grid::dfs(int x, int y, int boja)
     if (visited[x][y] == 1)
         return 0;
 
-    if (polje [x][y] != boja)
+    if (polje[x][y] != boja)
         return 0;
 
     visited[x][y] = 1;
 
-    return dfs(x-1,y, boja) + dfs(x-1,y-1, boja) + dfs(x,y-1, boja) + dfs(x,y, boja);
+    return 1 + dfs(x - 1, y, boja) + dfs(x - 1, y - 1, boja) + dfs(x, y - 1, boja) + dfs(x, y, boja);
 }
 
 void grid::ispisiGrid(int x, int y)
