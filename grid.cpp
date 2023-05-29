@@ -49,9 +49,20 @@ int grid::getVelicina()
 
 // funkcije za izradu grida
 
-void grid::postaviPlocicu(int x, int y, plocica pl)
+void grid::nullirajVisited()
 {
-    int i, j, bx = 0, by = 0;
+    for (int i = 0; i < 332; i++)
+    {
+        memset(visited[i], 0, 332 * sizeof(bool));
+    }
+}
+
+int grid::postaviPlocicu(int x, int y, plocica pl)
+{
+    int i, j, bx = 0, by = 0, sum = 0;
+    // cistimo polje visited
+    nullirajVisited();
+    // postavi plocicu na polje
     for (i = x - 2; i < x + 2; i++)
     {
         for (j = y - 1; j < y + 3; j++)
@@ -62,6 +73,45 @@ void grid::postaviPlocicu(int x, int y, plocica pl)
         by = 0;
         bx++;
     }
+    // racunaj bodove
+    // 1. ispitaj susjede
+    // provjeravamo lijeve i desne susjede
+    bool vrh;
+    for (i = x - 1; i < x + 3; i++)
+    {
+        // provjera lijevo
+        if (polje[i][y - 3] && polje[i][y - 3] == polje[i][y - 2])
+        {
+            sum += 1 + dfs(i, y - 2);
+        }
+        // provejera desno
+        if (polje[i][y + 2] && polje[i][y + 2] == polje[i][y + 1])
+        {
+            sum += 1 + dfs(i, y + 1);
+        }
+    }
+
+    // provjeravamo gornje i donje susjede
+    for (j = y - 2; j < y + 2; j++)
+    {
+        vrh = j == y - 2 || j == y + 1;
+        // provjera gore
+        if (polje[x - 2][j] && polje[x - 2][j] == polje[x - 1][j] && !visited[x - 1][j])
+        {
+            sum += 1 + dfs(x - 1, j);
+        }
+        // provjera dolje
+        if (polje[x + 3][j] && polje[x + 3][j] == polje[x + 2][j] && !visited[x + 2][j])
+        {
+            sum += 1 + dfs(x + 2, j);
+        }
+    }
+}
+
+int grid::dfs(int x, int y)
+{
+    // zaustavni uvjeti
+    // 1 petlja
 }
 
 void grid::ispisiGrid(int x, int y)

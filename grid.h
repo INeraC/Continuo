@@ -9,8 +9,11 @@ class grid
 {
     static const int velicina_polja = 332;
     int polje[velicina_polja][velicina_polja] = {0};
+    bool visited[velicina_polja][velicina_polja] = {0};
     int velicina;
     sf::Vector2i pozicija;
+    int dfs(int x, int y);
+    void nullirajVisited();
 
 public:
     grid();
@@ -22,7 +25,7 @@ public:
     void setVelicina(int brKockica);
     void setPozicija(sf::Vector2i pocetna_pozicija);
 
-    void postaviPlocicu(int x, int y, plocica pl);
+    int postaviPlocicu(int x, int y, plocica pl);
     void ispisiGrid(int x, int y);
     sf::Vector2f crtajGrid(sf::RenderWindow &prozor);
     bool provjeriPoziciju(sf::Vector2i &mousePos, sf::Vector2f &gridStats);
