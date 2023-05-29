@@ -123,8 +123,6 @@ int grid::dfs(int x, int y, int boja)
     visited[x][y] = 1;
 
     return dfs(x-1,y, boja) + dfs(x-1,y-1, boja) + dfs(x,y-1, boja) + dfs(x,y, boja);
-    
-
 }
 
 void grid::ispisiGrid(int x, int y)

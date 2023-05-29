@@ -12,7 +12,7 @@ class grid
     bool visited[velicina_polja][velicina_polja] = {0};
     int velicina;
     sf::Vector2i pozicija;
-    int dfs(int x, int y);
+    int dfs(int x, int y, int boja);
     void nullirajVisited();
 
 public:
