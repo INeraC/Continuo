@@ -106,6 +106,7 @@ int grid::postaviPlocicu(int x, int y, plocica pl)
             sum += dfs(x + 2, j, polje[x + 2][j]);
         }
     }
+    return sum;
 }
 
 // ne moramo li pamtiti boju za koju radimo dfs
