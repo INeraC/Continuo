@@ -171,9 +171,10 @@ int main()
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && polje.provjeriPoziciju(mousePos, gridStats))
         {
             sf::Vector2i koordinate = polje.getKoordinate(mousePos, gridStats);
-            polje.postaviPlocicu(koordinate.x + 2, koordinate.y + 1, tr_plocica);
+            int tr = polje.postaviPlocicu(koordinate.x + 2, koordinate.y + 1, tr_plocica);
             tr_plocica = plocice.back();
             plocice.pop_back();
+            cout << tr << endl;
         }
 
         // pomicanje ekrana

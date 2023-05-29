@@ -82,11 +82,14 @@ int grid::postaviPlocicu(int x, int y, plocica pl)
         // provjera lijevo
         if (polje[i][y - 3] && polje[i][y - 3] == polje[i][y - 2])
         {
+
+            cout << "lijevo " << i << " " << y - 2 << endl;
             sum += dfs(i, y - 2, polje[i][y - 3]);
         }
         // provejera desno
         if (polje[i][y + 2] && polje[i][y + 2] == polje[i][y + 1])
         {
+            cout << "desno " << i << " " << y - 2 << endl;
             sum += dfs(i, y + 1, polje[i][y + 2]);
         }
     }
@@ -98,11 +101,13 @@ int grid::postaviPlocicu(int x, int y, plocica pl)
         // provjera gore
         if (polje[x - 2][j] && polje[x - 2][j] == polje[x - 1][j] && !visited[x - 1][j])
         {
+            cout << "gore " << x - 2 << " " << j << endl;
             sum += dfs(x - 1, j, polje[x - 1][j]);
         }
         // provjera dolje
         if (polje[x + 3][j] && polje[x + 3][j] == polje[x + 2][j] && !visited[x + 2][j])
         {
+            cout << "dolje " << x + 2 << " " << j << endl;
             sum += dfs(x + 2, j, polje[x + 2][j]);
         }
     }
@@ -113,6 +118,7 @@ int grid::postaviPlocicu(int x, int y, plocica pl)
 
 int grid::dfs(int x, int y, int boja)
 {
+
     // zaustavni uvjeti
     // 1 petlja
     if (visited[x][y] == 1)
@@ -122,8 +128,8 @@ int grid::dfs(int x, int y, int boja)
         return 0;
 
     visited[x][y] = 1;
-
-    return 1 + dfs(x - 1, y, boja) + dfs(x - 1, y - 1, boja) + dfs(x, y - 1, boja) + dfs(x, y, boja);
+    cout << x << " " << y << endl;
+    return 1 + dfs(x - 1, y, boja) + dfs(x + 1, y, boja) + dfs(x, y - 1, boja) + dfs(x, y + 1, boja);
 }
 
 void grid::ispisiGrid(int x, int y)
@@ -247,7 +253,7 @@ void grid::zoomOut()
 
 void grid::moveLeft()
 {
-    cout << pozicija.x << " " << pozicija.y << " " << velicina << endl;
+
     if (pozicija.x > 0)
     {
         pozicija.x--;
