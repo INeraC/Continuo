@@ -62,7 +62,7 @@ int grid::postaviPlocicu(int x, int y, plocica pl)
     int i, j, bx = 0, by = 0, sum = 0;
     // cistimo polje visited
     nullirajVisited();
-    // postavi plocicu na polje
+    // postavljamo plocicu na polje
     for (i = x - 2; i < x + 2; i++)
     {
         for (j = y - 1; j < y + 3; j++)
@@ -73,48 +73,46 @@ int grid::postaviPlocicu(int x, int y, plocica pl)
         by = 0;
         bx++;
     }
-    // racunaj bodove
-    // 1. ispitaj susjede
-    // provjeravamo lijeve i desne susjede
-    bool vrh;
-    for (i = x - 1; i < x + 3; i++)
+    // racunamo bodove
+    // jako bitno je napomenuti da smo se u cijelom kodu s i kretali po stupcima, a s j po retcima pa su varijable
+    // i i j zamijenjene u odnosu na inace
+
+    // provjeravamo gornje i donje susjede
+    for (i = x - 2; i < x + 2; i++)
     {
-        // provjera lijevo
-        if (polje[i][y - 3] && polje[i][y - 3] == polje[i][y - 2])
+        // provjera gore
+        if (polje[i][y - 2] && polje[i][y - 2] == polje[i][y - 1])
         {
 
-            cout << "lijevo " << i << " " << y - 2 << endl;
-            sum += dfs(i, y - 2, polje[i][y - 3]);
+            // cout << "gore " << i << " " << y - 1 << endl;
+            sum += dfs(i, y - 1, polje[i][y - 1]);
         }
-        // provejera desno
-        if (polje[i][y + 2] && polje[i][y + 2] == polje[i][y + 1])
+        // provjera dolje
+        if (polje[i][y + 3] && polje[i][y + 3] == polje[i][y + 2])
         {
-            cout << "desno " << i << " " << y - 2 << endl;
-            sum += dfs(i, y + 1, polje[i][y + 2]);
+            // cout << "dolje " << i << " " << y + 2 << endl;
+            sum += dfs(i, y + 2, polje[i][y + 2]);
         }
     }
 
-    // provjeravamo gornje i donje susjede
-    for (j = y - 2; j < y + 2; j++)
+    // provjeravamo lijeve i desne susjede
+    for (j = y - 1; j < y + 3; j++)
     {
-        vrh = j == y - 2 || j == y + 1;
-        // provjera gore
-        if (polje[x - 2][j] && polje[x - 2][j] == polje[x - 1][j] && !visited[x - 1][j])
+        // provjera lijevo
+        if (polje[x - 3][j] && polje[x - 3][j] == polje[x - 2][j] && !visited[x - 2][j])
         {
-            cout << "gore " << x - 2 << " " << j << endl;
-            sum += dfs(x - 1, j, polje[x - 1][j]);
+            // cout << "lijevo " << x - 2 << " " << j << endl;
+            sum += dfs(x - 2, j, polje[x - 2][j]);
         }
-        // provjera dolje
-        if (polje[x + 3][j] && polje[x + 3][j] == polje[x + 2][j] && !visited[x + 2][j])
+        // provjera desno
+        if (polje[x + 2][j] && polje[x + 2][j] == polje[x + 1][j] && !visited[x + 1][j])
         {
-            cout << "dolje " << x + 2 << " " << j << endl;
-            sum += dfs(x + 2, j, polje[x + 2][j]);
+            // cout << "desno " << x + 1 << " " << j << endl;
+            sum += dfs(x + 1, j, polje[x + 1][j]);
         }
     }
     return sum;
 }
-
-// ne moramo li pamtiti boju za koju radimo dfs
 
 int grid::dfs(int x, int y, int boja)
 {
@@ -216,14 +214,14 @@ bool grid::provjeriPoziciju(sf::Vector2i &mousePos, sf::Vector2f &gridStats)
         }
     }
 
-    // provjeravamo lijeve i desne susjede
+    // provjeravamo gornje i donje susjede
     for (i = plocicaPos.x; i < plocicaPos.x + 4; i++)
     {
         if (polje[i][plocicaPos.y - 1] || polje[i][plocicaPos.y + 4])
             return true;
     }
 
-    // provjeravamo gornje i donje susjede
+    // provjeravamo lijeve i desne susjede
     for (j = plocicaPos.y; j < plocicaPos.y + 4; j++)
     {
         if (polje[plocicaPos.x - 1][j] || polje[plocicaPos.x + 4][j])
@@ -231,6 +229,23 @@ bool grid::provjeriPoziciju(sf::Vector2i &mousePos, sf::Vector2f &gridStats)
     }
 
     return false;
+}
+
+sf::Vector2i grid::greedyPozicija()
+{
+    int i, j;
+    for (i = 0; i < 332; i++)
+    {
+        for (j = 0; j < 332; j++)
+        {
+            sf::Vector2i mousepos(i, j);
+            sf::Vector2f gridstats;
+            if (provjeriPoziciju(mousepos, gridstats))
+            {
+
+            }
+        }
+    }
 }
 
 // funkcije za animaciju polja
@@ -267,6 +282,7 @@ void grid::moveRight()
         pozicija.x++;
     }
 }
+
 void grid::moveUp()
 {
     if (pozicija.y > 10)
@@ -274,6 +290,7 @@ void grid::moveUp()
         pozicija.y--;
     }
 }
+
 void grid::moveDown()
 {
     if (pozicija.y < 300)

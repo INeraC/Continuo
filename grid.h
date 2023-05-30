@@ -30,6 +30,7 @@ public:
     sf::Vector2f crtajGrid(sf::RenderWindow &prozor);
     bool provjeriPoziciju(sf::Vector2i &mousePos, sf::Vector2f &gridStats);
     sf::Vector2i getKoordinate(sf::Vector2i &mousePos, sf::Vector2f &gridtats);
+    sf::Vector2i greedyPozicija ();
 
     void zoomIn();
     void zoomOut();
