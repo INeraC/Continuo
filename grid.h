@@ -15,6 +15,7 @@ class grid
     int dfs(int x, int y, int boja);
     void nullirajVisited();
 
+
 public:
     grid();
     grid(plocica pl);
@@ -29,9 +30,9 @@ public:
     void obrisiPlocicu(int x, int y, plocica pl);
     void ispisiGrid(int x, int y);
     sf::Vector2f crtajGrid(sf::RenderWindow &prozor);
+    sf::Vector2i getKoordinate(sf::Vector2i &mousePos, sf::Vector2f &gridtats);
     bool provjeriPoziciju(sf::Vector2i &mousePos, sf::Vector2f &gridStats);
     bool provjeriPoziciju(sf::Vector2i &plocicaPos);
-    sf::Vector2i getKoordinate(sf::Vector2i &mousePos, sf::Vector2f &gridtats);
     int racunajBodoveZaPlocicu(int x, int y, plocica pl);
     int greedyPozicija(sf::Vector2f &gridStats, plocica pl);
 

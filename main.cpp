@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <unistd.h>
 
+
 #define FONT_SIZE_SMALL 0.012 * sf::VideoMode::getDesktopMode().width
 #define FONT_SIZE_BIG 0.03 * sf::VideoMode::getDesktopMode().width
 #define FONT_KRAJ 0.04 * sf::VideoMode::getDesktopMode().width
@@ -13,18 +14,21 @@
 #define DEFAULT_SIZE_NOT_FULL_SCREEN sf::VideoMode::getDesktopMode().height * 4 / 5, sf::VideoMode::getDesktopMode().height * 4 / 5
 #define DEFAULT_SIZE_FULL_SCREEN sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height
 
+
 using namespace std;
+
 
 int main()
 {
-    // izrada prozora
+    //! izrada prozora
     sf::RenderWindow prozor;
     auto racunalo = sf::VideoMode::getDesktopMode();
     prozor.create(sf::VideoMode(DEFAULT_SIZE_PRAVILA), "Continuo pravila");
     sf::Vector2i pozicija(racunalo.width / 2 - prozor.getSize().x / 2, racunalo.height / 2 - prozor.getSize().y / 2 * 3);
     prozor.setPosition(pozicija);
 
-    // potrebni alati na prozoru
+
+    //! potrebni alati na prozoru
     sf::Text naslov;
     sf::Text gumbText;
     sf::Font font;
@@ -36,14 +40,16 @@ int main()
     sf::Text kraj;
     sf::Text smallRez;
 
-    // ucitavanje fonta
+
+    //! ucitavanje fonta
     if (!font.loadFromFile("./Merriweather/Merriweather-Black.ttf"))
     {
         cout << "ERROR" << endl;
         system("pause");
     }
 
-    // napravimo naslov
+
+    //! napravimo naslov
     naslov.setFont(font);
     naslov.setString("Pravila Igre");
     naslov.setCharacterSize(FONT_SIZE_BIG);
@@ -51,7 +57,8 @@ int main()
     naslov.setStyle(sf::Text::Style::Bold);
     naslov.setPosition(prozor.getSize().x / 2 - naslov.getLocalBounds().width / 2, 0);
 
-    // napravimo pravila
+
+    //! napravimo pravila
     pravila.setFont(font);
     pravila.setString("Igra Continuo igra se tako da svaki igrac na svom potezu postavlja jednu plocicu \n na veliko kvadratno polje, pri cemu ju moze rotirati. Novo postavljena plocica \n mora dodirivati, bez preklapanja, jednu ili vise postojecih plocica i mora  \nbiti poravnata s kvadraticima na plocicama. Igrac osvaja bod za svaki kvadratic\nna novopostavljenoj plocici spojen s istoobojanim kvadraticima na vec \npostavljenim plocicama, pri cemu se na broj vec osvojenih bodova dodaje broj \nkvadratica koji cine neprekidno podrucje s pocetkom na novopostavljenoj \nplocici. Neprekidno podrucje cini niz spojenih kvadratica u istoj boji. \n\nIgra se igra sve dok se ne potrose sve plocice, a pobjednik je onaj koji osvoji \nvise bodova. \n\nUPUTA: \nAko ne zelis igrati u fullscreenu, stisni tipku ESC, a ako se pozelis vratiti \nu fullscreen mozes stisnuti tipku F11 i tako mijenjati velicinu zaslona. Plocica \nse rotira pritiskom tipke r. Nadalje, po polju se mozes kretati strelicama, a \npostoji opcija i zoomiranja i odzoomiranja kako bi kao igrac mogao/la imati \npregled nad cijelom situacijom.\n\nU ovoj verziji igra se protiv racunala i jako je tesko pobijediti, stoga pokreni \nigru i pokusaj nadmudriti racunalo! Sretno!");
     pravila.setCharacterSize(FONT_SIZE_SMALL);
@@ -59,9 +66,8 @@ int main()
     pravila.setStyle(sf::Text::Style::Regular);
     pravila.setPosition(sf::Vector2f(prozor.getSize().x / 2 - pravila.getLocalBounds().width / 2, prozor.getSize().y / 2 - naslov.getCharacterSize() - pravila.getLocalBounds().height / 2));
 
-    cout << "prozor size " << racunalo.width << " " << racunalo.height << endl;
 
-    // napravimo gumb start koji se sastoji od texta i pravokutnika
+    //! napravimo gumb start koji se sastoji od texta i pravokutnika
     gumbText.setFont(font);
     gumbText.setString("Start");
     gumbText.setCharacterSize(FONT_SIZE_BIG);
@@ -72,7 +78,8 @@ int main()
     gumbStart.setFillColor(sf::Color(111, 78, 55));
     gumbStart.setPosition(sf::Vector2f(prozor.getSize().x / 2.f - gumbStart.getLocalBounds().width / 2.f, prozor.getSize().y * 1.f - naslov.getCharacterSize() * 2.f));
 
-    // bavimo se kursorom i ucitavamo kursor
+
+    //! bavimo se kursorom i ucitavamo kursor
     sf::Cursor ruka, strelica;
     if (!ruka.loadFromSystem(sf::Cursor::Hand))
     {
@@ -83,23 +90,28 @@ int main()
         cout << "Could not load arrow cursor" << endl;
     }
 
-    // koristit cemo varijablu u slucaju promjene velicine prozora
+
+    //! koristit cemo varijablu u slucaju promjene velicine prozora
     bool changeProzor = false, crtajObrub = false, krajIgre = false, smallScreen = false;
 
-    // generiramo svoje plocice i  konstruktorom inicijaliziramo pocetni pogled
+
+    //! generiramo svoje plocice i  konstruktorom inicijaliziramo pocetni pogled
     vector<plocica> plocice = generiraj();
     grid polje(plocice.back(), 141, 141, 50);
     plocice.pop_back();
     sf::Vector2f gridStats(-1.0f, -1.0f);
 
-    // uzimanje prve plocice
+
+    //! uzimanje prve plocice
     plocica tr_plocica = plocice.back();
     plocice.pop_back();
 
-    // inicijalizacija varijabli za brojanje bodova
+
+    //! inicijalizacija varijabli za brojanje bodova
     int rac = 0, play = 0;
 
-    // inicijalizacija teksta
+
+    //! inicijalizacija teksta
     igrac.setFont(font);
     igrac.setString("IGRAC:");
     igrac.setCharacterSize(FONT_SIZE_BIG);
@@ -124,22 +136,25 @@ int main()
     botkoRez.setFillColor(sf::Color::Black);
     botkoRez.setStyle(sf::Text::Style::Regular);
 
-    // tekst kraj igre
+
+    //! tekst kraj igre
     kraj.setFont(font);
     kraj.setString("Kraj igre!!!");
     kraj.setCharacterSize(FONT_KRAJ);
     kraj.setFillColor(sf::Color::Black);
     kraj.setStyle(sf::Text::Style::Bold);
 
-    // small rezultat
+
+    //! small rezultat
     smallRez.setFont(font);
     smallRez.setCharacterSize(FONT_KRAJ);
     smallRez.setFillColor(sf::Color::Black);
     smallRez.setStyle(sf::Text::Style::Bold);
 
+
     while (prozor.isOpen())
     {
-        // biramo pozicije na prozoru za gumb, mis
+        //! biramo pozicije na prozoru za gumb, mis
         sf::Event d;
         sf::Vector2i mousePos = sf::Mouse::getPosition(prozor);
         sf::Vector2i gumbPos(gumbStart.getPosition());
@@ -152,7 +167,7 @@ int main()
                 prozor.close();
             }
 
-            // animacija da gumb mijenja boju ako dodemo misem do njega
+            //! animacija da gumb mijenja boju ako dodemo misem do njega
             if (d.type == sf::Event::MouseMoved && !changeProzor)
             {
 
@@ -169,7 +184,7 @@ int main()
                     prozor.setMouseCursor(strelica);
                 }
             }
-            // provjera je li plocica u poziciji za polaganje na polje
+            //! provjera je li plocica u poziciji za polaganje na polje
             if (d.type == sf::Event::MouseMoved && changeProzor && polje.provjeriPoziciju(mousePos, gridStats) && !krajIgre)
             {
                 crtajObrub = true;
@@ -179,7 +194,7 @@ int main()
                 crtajObrub = false;
             }
 
-            // provjera koristenja kotacica za zoomiranje polja
+            //! provjera koristenja kotacica za zoomiranje polja
             if (d.type == sf::Event::MouseWheelMoved)
             {
                 if (d.mouseWheel.delta < 0)
@@ -193,7 +208,7 @@ int main()
             }
         }
 
-        // otvaranje novog prozora i pocetak igranja Continuoa
+        //! otvaranje novog prozora i pocetak igranja Continuoa
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && mousePos.x > gumbPos.x && mousePos.x < gumbPos.x + gumbWiHi.x && mousePos.y > gumbPos.y && mousePos.y < gumbPos.y + gumbWiHi.y && !changeProzor)
         {
             changeProzor = true;
@@ -201,7 +216,7 @@ int main()
             igrac.setPosition(gridStats.y / 2 - igrac.getLocalBounds().width / 2, prozor.getSize().y / 2);
         }
 
-        // s Esc cemo izlaziti van iz igrice ako ne zelimo zavrsiti partiju
+        //! s Esc cemo izlaziti van iz igrice ako ne zelimo zavrsiti partiju
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
         {
             sf::Vector2u sz(DEFAULT_SIZE_NOT_FULL_SCREEN);
@@ -210,13 +225,13 @@ int main()
             smallScreen = true;
         }
 
-        // F11 mijenja velicinu prozora
+        //! F11 mijenja velicinu prozora
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::F11) && changeProzor)
         {
             prozor.create(sf::VideoMode(DEFAULT_SIZE_FULL_SCREEN), "Continuo", sf::Style::Fullscreen);
             smallScreen = false;
         }
-        // plocica se rotira
+        //! plocica se rotira
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
         {
             while (usleep(100))
@@ -227,7 +242,7 @@ int main()
                 ;
         }
 
-        // stavljanje plocice na polje
+        //! stavljanje plocice na polje
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && polje.provjeriPoziciju(mousePos, gridStats) && !krajIgre)
         {
             sf::Vector2i koordinate = polje.getKoordinate(mousePos, gridStats);
@@ -243,7 +258,7 @@ int main()
             plocice.pop_back();
         }
 
-        // pomicanje ekrana
+        //! pomicanje ekrana
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
         {
             polje.moveDown();
@@ -260,8 +275,8 @@ int main()
         {
             polje.moveRight();
         }
-        // stvara prikaz prozora
 
+        //! stvara prikaz prozora
         if (!changeProzor)
         {
             prozor.clear(sf::Color(255, 239, 222));
@@ -283,10 +298,13 @@ int main()
             botkoRez.setPosition(gridStats.x * polje.getVelicina() + gridStats.y + gridStats.y / 2 - botko.getLocalBounds().width / 2, prozor.getSize().y / 2 + 10);
             prozor.clear(sf::Color::White);
             gridStats = polje.crtajGrid(prozor);
+
             if (crtajObrub)
                 tr_plocica.crtajRub(prozor, gridStats, mousePos);
+
             if (!krajIgre)
                 tr_plocica.crtajPlocicu(prozor, gridStats, mousePos);
+
             if (!smallScreen)
             {
                 prozor.draw(igrac);
@@ -294,10 +312,12 @@ int main()
                 prozor.draw(botko);
                 prozor.draw(botkoRez);
             }
+
             if (plocice.empty())
             {
                 krajIgre = true;
                 prozor.draw(kraj);
+
                 if (smallScreen)
                 {
                     smallRez.setString("(I) " + to_string(play) + "  :  " + to_string(rac) + " (B)");

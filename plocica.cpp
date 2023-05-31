@@ -4,13 +4,17 @@
 #include <vector>
 #include <time.h>
 
+
 #define Crvena 1
 #define Plava 2
 #define Zelena 3
 #define Zuta 4
 
+
 using namespace std;
 
+
+//!konstruktor
 plocica::plocica(int lijevi_kut, int lijevi_segment, int desni_kut, int desni_segment)
 {
     int i, j;
@@ -27,6 +31,8 @@ plocica::plocica(int lijevi_kut, int lijevi_segment, int desni_kut, int desni_se
     polje[1][2] = polje[2][1] = polje[0][2] = polje[2][0] = polje[1][3] = polje[3][1] = desni_segment;
 }
 
+
+//!rotiranje plocicu
 void plocica::rotiraj()
 {
     int i, j, temp;
@@ -42,6 +48,8 @@ void plocica::rotiraj()
     }
 }
 
+
+//!ispis plocice
 void plocica::ispisi()
 {
     int i, j;
@@ -56,6 +64,8 @@ void plocica::ispisi()
     }
 }
 
+
+//!provjera jesu li plocice iste
 bool plocica::iste(plocica p)
 {
     int i, j;
@@ -86,6 +96,8 @@ bool plocica::iste(plocica p)
     return false;
 }
 
+
+//!funkcija koja generira plocice za igru
 vector<plocica> generiraj()
 {
     srand(unsigned(time(NULL)));
@@ -130,6 +142,7 @@ vector<plocica> generiraj()
         }
     }
 
+    //sluzilo za provjeru generiranja plocica
     // for(i = 0; i < ret.size();i++){
     //     for( j = 0; j < ret.size(); j++){
     //         if( i== j)
@@ -144,7 +157,8 @@ vector<plocica> generiraj()
     return ret;
 }
 
-// crtaj plocicu s obzirom na poziciju misa
+
+//! crtaj plocicu s obzirom na poziciju misa
 bool plocica::crtajPlocicu(sf::RenderWindow &prozor, sf::Vector2f &gridStats, sf::Vector2i &mousePos)
 {
     int i, j;
@@ -190,8 +204,8 @@ bool plocica::crtajPlocicu(sf::RenderWindow &prozor, sf::Vector2f &gridStats, sf
     return true;
 }
 
-// crtaj obrub plocice
 
+//! crtaj obrub plocice
 void plocica::crtajRub(sf::RenderWindow &prozor, sf::Vector2f &gridStats, sf::Vector2i &mousePos)
 {
     sf::Vector2f pozicijaBase(mousePos.x - 2.5f * gridStats.x, mousePos.y - 1.5f * gridStats.x);
@@ -201,9 +215,3 @@ void plocica::crtajRub(sf::RenderWindow &prozor, sf::Vector2f &gridStats, sf::Ve
     obrub.setPosition(pozicijaBase);
     prozor.draw(obrub);
 }
-
-// int main(){
-//     vector<plocica> pl;
-//     pl = generiraj();
-//     return 0;
-// }

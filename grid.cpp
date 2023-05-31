@@ -4,13 +4,14 @@
 #include "grid.h"
 #include <SFML/Graphics.hpp>
 
+
 #define Crvena 1
 #define Plava 2
 #define Zelena 3
 #define Zuta 4
 
-// konstruktori
 
+//! konstruktori
 grid::grid() {}
 
 grid::grid(plocica pl)
@@ -26,7 +27,8 @@ grid::grid(plocica pl, int x, int y, int velicina)
     this->pozicija.y = y;
 }
 
-// getteri i setteri
+
+//! getteri i setteri
 void grid::setPozicija(sf::Vector2i pozicija)
 {
     this->pozicija = pozicija;
@@ -47,62 +49,8 @@ int grid::getVelicina()
     return velicina;
 }
 
-// funkcije za izradu grida
 
-void grid::nullirajVisited()
-{
-    for (int i = 0; i < 332; i++)
-    {
-        memset(visited[i], 0, 332 * sizeof(bool));
-    }
-}
-
-int grid::racunajBodoveZaPlocicu(int x, int y, plocica pl)
-{
-    int i, j, sum = 0;
-    // cistimo polje visited
-    nullirajVisited();
-    // racunamo bodove
-    // jako bitno je napomenuti da smo se u cijelom kodu s i kretali po stupcima, a s j po retcima pa su varijable
-    // i i j zamijenjene u odnosu na inace
-
-    // provjeravamo gornje i donje susjede
-    for (i = x - 2; i < x + 2; i++)
-    {
-        // provjera gore
-        if (polje[i][y - 2] && polje[i][y - 2] == polje[i][y - 1])
-        {
-
-            // cout << "gore " << i << " " << y - 1 << endl;
-            sum += dfs(i, y - 1, polje[i][y - 1]);
-        }
-        // provjera dolje
-        if (polje[i][y + 3] && polje[i][y + 3] == polje[i][y + 2])
-        {
-            // cout << "dolje " << i << " " << y + 2 << endl;
-            sum += dfs(i, y + 2, polje[i][y + 2]);
-        }
-    }
-
-    // provjeravamo lijeve i desne susjede
-    for (j = y - 1; j < y + 3; j++)
-    {
-        // provjera lijevo
-        if (polje[x - 3][j] && polje[x - 3][j] == polje[x - 2][j] && !visited[x - 2][j])
-        {
-            // cout << "lijevo " << x - 2 << " " << j << endl;
-            sum += dfs(x - 2, j, polje[x - 2][j]);
-        }
-        // provjera desno
-        if (polje[x + 2][j] && polje[x + 2][j] == polje[x + 1][j] && !visited[x + 1][j])
-        {
-            // cout << "desno " << x + 1 << " " << j << endl;
-            sum += dfs(x + 1, j, polje[x + 1][j]);
-        }
-    }
-    return sum;
-}
-
+//!funckija za postavljanje plocice
 void grid::postaviPlocicu(int x, int y, plocica pl)
 {
     int i, j, bx = 0, by = 0;
@@ -119,6 +67,8 @@ void grid::postaviPlocicu(int x, int y, plocica pl)
     }
 }
 
+
+//!funkcija za brisanje plocice
 void grid::obrisiPlocicu(int x, int y, plocica pl)
 {
     int i, j;
@@ -132,22 +82,8 @@ void grid::obrisiPlocicu(int x, int y, plocica pl)
     }
 }
 
-int grid::dfs(int x, int y, int boja)
-{
 
-    // zaustavni uvjeti
-    // 1 petlja
-    if (visited[x][y] == 1)
-        return 0;
-
-    if (polje[x][y] != boja)
-        return 0;
-
-    visited[x][y] = 1;
-    // cout << x << " " << y << endl;
-    return 1 + dfs(x - 1, y, boja) + dfs(x + 1, y, boja) + dfs(x, y - 1, boja) + dfs(x, y + 1, boja);
-}
-
+//!funkcij za ispis grida
 void grid::ispisiGrid(int x, int y)
 {
     int i, j;
@@ -162,8 +98,8 @@ void grid::ispisiGrid(int x, int y)
     cout << endl;
 }
 
-// funkcija koja prima koordinate gornjeg lijevog te donjeg desnog vrha kvadrata koji ce biti prikazan i prozor te na tom prozoru crta taj dio grida
 
+//! funkcija koja prima koordinate gornjeg lijevog te donjeg desnog vrha kvadrata koji ce biti prikazan i prozor te na tom prozoru crta taj dio grida
 sf::Vector2f grid::crtajGrid(sf::RenderWindow &prozor)
 {
 
@@ -206,6 +142,8 @@ sf::Vector2f grid::crtajGrid(sf::RenderWindow &prozor)
     return ret;
 }
 
+
+//!funkcija za dohvacanje koordinata iz pozicije misa na screenu
 sf::Vector2i grid::getKoordinate(sf::Vector2i &mousePos, sf::Vector2f &gridStats)
 {
 
@@ -214,6 +152,8 @@ sf::Vector2i grid::getKoordinate(sf::Vector2i &mousePos, sf::Vector2f &gridStats
     return plocicaPos;
 }
 
+
+//!funkcija za provjeru je li moguce staviti plocicu sa misa na polje
 bool grid::provjeriPoziciju(sf::Vector2i &mousePos, sf::Vector2f &gridStats)
 {
     if (gridStats.x < 0 || gridStats.y < 0)
@@ -249,6 +189,8 @@ bool grid::provjeriPoziciju(sf::Vector2i &mousePos, sf::Vector2f &gridStats)
     return false;
 }
 
+
+//!funkcija za provjeru je li moguce staviti plocicu na polje
 bool grid::provjeriPoziciju(sf::Vector2i &plocicaPos)
 {
     int i, j;
@@ -279,6 +221,78 @@ bool grid::provjeriPoziciju(sf::Vector2i &plocicaPos)
     return false;
 }
 
+
+//! funkcije za izradu pomocnog grida
+void grid::nullirajVisited()
+{
+    for (int i = 0; i < 332; i++)
+    {
+        memset(visited[i], 0, 332 * sizeof(bool));
+    }
+}
+
+
+//!dfs
+int grid::dfs(int x, int y, int boja)
+{
+
+    // zaustavni uvjeti
+    if (visited[x][y] == 1)
+        return 0;
+
+    if (polje[x][y] != boja)
+        return 0;
+
+    visited[x][y] = 1;
+    return 1 + dfs(x - 1, y, boja) + dfs(x + 1, y, boja) + dfs(x, y - 1, boja) + dfs(x, y + 1, boja);
+}
+
+
+//!funkcija za racunanje bodova
+int grid::racunajBodoveZaPlocicu(int x, int y, plocica pl)
+{
+    int i, j, sum = 0;
+    // cistimo polje visited
+    nullirajVisited();
+    // jako bitno je napomenuti da smo se u cijelom kodu s i kretali po stupcima, a s j po retcima pa su varijable
+    // i i j zamijenjene u odnosu na inace
+
+    // provjeravamo gornje i donje susjede
+    for (i = x - 2; i < x + 2; i++)
+    {
+        // provjera gore
+        if (polje[i][y - 2] && polje[i][y - 2] == polje[i][y - 1])
+        {
+            sum += dfs(i, y - 1, polje[i][y - 1]);
+        }
+
+        // provjera dolje
+        if (polje[i][y + 3] && polje[i][y + 3] == polje[i][y + 2])
+        {
+            sum += dfs(i, y + 2, polje[i][y + 2]);
+        }
+    }
+
+    // provjeravamo lijeve i desne susjede
+    for (j = y - 1; j < y + 3; j++)
+    {
+        // provjera lijevo
+        if (polje[x - 3][j] && polje[x - 3][j] == polje[x - 2][j] && !visited[x - 2][j])
+        {
+            sum += dfs(x - 2, j, polje[x - 2][j]);
+        }
+
+        // provjera desno
+        if (polje[x + 2][j] && polje[x + 2][j] == polje[x + 1][j] && !visited[x + 1][j])
+        {
+            sum += dfs(x + 1, j, polje[x + 1][j]);
+        }
+    }
+    return sum;
+}
+
+
+//!funkcija za greedy algoritam 
 int grid::greedyPozicija(sf::Vector2f &gridStats, plocica pl)
 {
     int i, j, max_br_bodova = -1, tr_bodovi, posx, posy;
@@ -322,15 +336,14 @@ int grid::greedyPozicija(sf::Vector2f &gridStats, plocica pl)
             }
         }
     }
-    // cout << max_br_bodova << endl;
     if (rotirana)
         pl.rotiraj();
     postaviPlocicu(posx, posy, pl);
     return max_br_bodova;
 }
 
-// funkcije za animaciju polja
 
+//! funkcije za animaciju polja
 void grid::zoomIn()
 {
     if (velicina >= 10)
