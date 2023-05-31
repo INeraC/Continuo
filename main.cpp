@@ -45,7 +45,7 @@ int main()
 
     //napravimo pravila
     pravila.setFont(font);
-    pravila.setString("Kako ce cijeli tekst stati i kako cemo potrefiti razmake?");
+    pravila.setString("Igra Continuo igra se tako da svaki igrac na svom potezu postavlja jednu plocicu \n na veliko kvadratno polje, pri cemu ju moze rotirati. Novo postavljena plocica \n mora dodirivati, bez preklapanja, jednu ili vise postojecih plocica i mora  \nbiti poravnata s kvadraticima na plocicama. Igrac osvaja bod za svaki kvadratic\nna novopostavljenoj plocici spojen s istoobojanim kvadraticima na vec \npostavljenim plocicama, pri cemu se na broj vec osvojenih bodova dodaje broj \nkvadratica koji cine neprekidno podrucje s pocetkom na novopostavljenoj \nplocici. Neprekidno podrucje cini niz spojenih kvadratica u istoj boji. \n\nIgra se igra sve dok se ne potrose sve plocice, a pobjednik je onaj koji osvoji \nvise bodova. \n\nUPUTA: \nAko ne zelis igrati u fullscreenu, stisni tipku ESC, a ako se pozelis vratiti \nu fullscreen mozes stisnuti tipku F11 i tako mijenjati velicinu zaslona. Plocica \nse rotira pritiskom tipke r. Nadalje, po polju se mozes kretati strelicama, a \npostoji opcija i zoomiranja i odzoomiranja kako bi kao igrac mogao/la imati \npregled nad cijelom situacijom.\n\nU ovoj verziji igra se protiv racunala i jako je tesko pobijediti, stoga pokreni \nigru i pokusaj nadmudriti racunalo! Sretno!");
     pravila.setCharacterSize(50);
     pravila.setFillColor(sf::Color(111, 78, 55));
     pravila.setStyle(sf::Text::Style::Regular);
@@ -178,9 +178,11 @@ int main()
             int tr = polje.racunajBodoveZaPlocicu(koordinate.x + 2, koordinate.y + 1, tr_plocica);
             tr_plocica = plocice.back();
             plocice.pop_back();
-            cout << tr << endl;            
+            cout << tr << endl;
+                
             polje.greedyPozicija(gridStats,tr_plocica);
-
+            tr_plocica = plocice.back();
+            plocice.pop_back();
         }
 
         // pomicanje ekrana

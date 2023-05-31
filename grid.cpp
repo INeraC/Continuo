@@ -119,6 +119,19 @@ void grid::postaviPlocicu(int x, int y, plocica pl)
     }
 }
 
+void grid::obrisiPlocicu(int x, int y, plocica pl)
+{
+    int i, j;
+    // brisemo plocicu
+    for (i = x - 2; i < x + 2; i++)
+    {
+        for (j = y - 1; j < y + 3; j++)
+        {
+            this->polje[i][j] = 0;
+        }
+    }
+}
+
 int grid::dfs(int x, int y, int boja)
 {
 
@@ -131,7 +144,7 @@ int grid::dfs(int x, int y, int boja)
         return 0;
 
     visited[x][y] = 1;
-    //cout << x << " " << y << endl;
+    // cout << x << " " << y << endl;
     return 1 + dfs(x - 1, y, boja) + dfs(x + 1, y, boja) + dfs(x, y - 1, boja) + dfs(x, y + 1, boja);
 }
 
@@ -235,29 +248,84 @@ bool grid::provjeriPoziciju(sf::Vector2i &mousePos, sf::Vector2f &gridStats)
 
     return false;
 }
-void grid::greedyPozicija (sf::Vector2f &gridStats, plocica pl)
+
+bool grid::provjeriPoziciju(sf::Vector2i &plocicaPos)
 {
-    int i, j, max_br_bodova = 0, tr_bodovi, posx, posy;
-    
-    for (i = 0; i < 332; i++)
+    int i, j;
+    // provjeravamo je li podrucje za plocicu u gridu popunjeno
+    for (i = plocicaPos.x; i < plocicaPos.x + 4; i++)
     {
-        for (j = 0; j < 332; j++)
+        for (j = plocicaPos.y; j < plocicaPos.y + 4; j++)
         {
-            sf::Vector2i mousepos(i, j);
-            if (provjeriPoziciju(mousepos, gridStats))
+            if (polje[i][j])
+                return false;
+        }
+    }
+
+    // provjeravamo gornje i donje susjede
+    for (i = plocicaPos.x; i < plocicaPos.x + 4; i++)
+    {
+        if (polje[i][plocicaPos.y - 1] || polje[i][plocicaPos.y + 4])
+            return true;
+    }
+
+    // provjeravamo lijeve i desne susjede
+    for (j = plocicaPos.y; j < plocicaPos.y + 4; j++)
+    {
+        if (polje[plocicaPos.x - 1][j] || polje[plocicaPos.x + 4][j])
+            return true;
+    }
+
+    return false;
+}
+
+void grid::greedyPozicija(sf::Vector2f &gridStats, plocica pl)
+{
+    int i, j, max_br_bodova = -1, tr_bodovi, posx, posy;
+    bool rotirana = false;
+
+    for (i = 4; i < 332; i++)
+    {
+        for (j = 2; j < 332; j++)
+        {
+            sf::Vector2i pozicija(i - 2, j - 1);
+            if (provjeriPoziciju(pozicija))
             {
-                cout<<i+2<<" "<<j+1<<endl;
-                tr_bodovi = racunajBodoveZaPlocicu(i+2,j+1,pl);
-                if (max_br_bodova < tr_bodovi){
+                // provjera za obicnu plocicu
+                postaviPlocicu(i, j, pl);
+                tr_bodovi = racunajBodoveZaPlocicu(i, j, pl);
+                // cout << i  << " " << j  <<" "<< tr_bodovi << endl;
+                if (max_br_bodova < tr_bodovi)
+                {
                     posx = i;
                     posy = j;
                     max_br_bodova = tr_bodovi;
+                    rotirana = false;
                 }
+                obrisiPlocicu(i, j, pl);
+
+                // provjera za rotiranu plocicu
+                pl.rotiraj();
+                postaviPlocicu(i, j, pl);
+                tr_bodovi = racunajBodoveZaPlocicu(i, j, pl);
+                // cout << i  << " " << j  <<" "<< tr_bodovi << endl;
+                if (max_br_bodova < tr_bodovi)
+                {
+                    posx = i;
+                    posy = j;
+                    max_br_bodova = tr_bodovi;
+                    rotirana = true;
+                }
+                obrisiPlocicu(i, j, pl);
+                // rotiramo plocicu u pocetno stanje
+                pl.rotiraj();
             }
         }
     }
-    cout<<max_br_bodova<<endl;
-    postaviPlocicu (posx, posy, pl);
+    cout << max_br_bodova << endl;
+    if (rotirana)
+        pl.rotiraj();
+    postaviPlocicu(posx, posy, pl);
 }
 
 // funkcije za animaciju polja

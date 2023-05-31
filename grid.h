@@ -26,9 +26,11 @@ public:
     void setPozicija(sf::Vector2i pocetna_pozicija);
 
     void postaviPlocicu(int x, int y, plocica pl);
+    void obrisiPlocicu(int x, int y, plocica pl);
     void ispisiGrid(int x, int y);
     sf::Vector2f crtajGrid(sf::RenderWindow &prozor);
     bool provjeriPoziciju(sf::Vector2i &mousePos, sf::Vector2f &gridStats);
+    bool provjeriPoziciju(sf::Vector2i &plocicaPos);
     sf::Vector2i getKoordinate(sf::Vector2i &mousePos, sf::Vector2f &gridtats);
     int racunajBodoveZaPlocicu(int x, int y, plocica pl);
     void greedyPozicija (sf::Vector2f &gridStats, plocica pl);
