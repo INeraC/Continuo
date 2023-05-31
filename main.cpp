@@ -6,7 +6,8 @@
 #include <algorithm>
 #include <unistd.h>
 
-#define FONT_SIZE_BIG 100
+#define FONT_SIZE_SMALL 0.01 * sf::VideoMode::getDesktopMode().width
+#define FONT_SIZE_BIG 0.03 * sf::VideoMode::getDesktopMode().width
 #define DEFAULT_SIZE_PRAVILA sf::VideoMode::getDesktopMode().width * 2 / 3, sf::VideoMode::getDesktopMode().height * 4 / 5
 #define DEFAULT_SIZE_NOT_FULL_SCREEN sf::VideoMode::getDesktopMode().height * 4 / 5, sf::VideoMode::getDesktopMode().height * 4 / 5
 #define DEFAULT_SIZE_FULL_SCREEN sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height
@@ -46,10 +47,12 @@ int main()
     // napravimo pravila
     pravila.setFont(font);
     pravila.setString("Igra Continuo igra se tako da svaki igrac na svom potezu postavlja jednu plocicu \n na veliko kvadratno polje, pri cemu ju moze rotirati. Novo postavljena plocica \n mora dodirivati, bez preklapanja, jednu ili vise postojecih plocica i mora  \nbiti poravnata s kvadraticima na plocicama. Igrac osvaja bod za svaki kvadratic\nna novopostavljenoj plocici spojen s istoobojanim kvadraticima na vec \npostavljenim plocicama, pri cemu se na broj vec osvojenih bodova dodaje broj \nkvadratica koji cine neprekidno podrucje s pocetkom na novopostavljenoj \nplocici. Neprekidno podrucje cini niz spojenih kvadratica u istoj boji. \n\nIgra se igra sve dok se ne potrose sve plocice, a pobjednik je onaj koji osvoji \nvise bodova. \n\nUPUTA: \nAko ne zelis igrati u fullscreenu, stisni tipku ESC, a ako se pozelis vratiti \nu fullscreen mozes stisnuti tipku F11 i tako mijenjati velicinu zaslona. Plocica \nse rotira pritiskom tipke r. Nadalje, po polju se mozes kretati strelicama, a \npostoji opcija i zoomiranja i odzoomiranja kako bi kao igrac mogao/la imati \npregled nad cijelom situacijom.\n\nU ovoj verziji igra se protiv racunala i jako je tesko pobijediti, stoga pokreni \nigru i pokusaj nadmudriti racunalo! Sretno!");
-    pravila.setCharacterSize(20);
+    pravila.setCharacterSize(FONT_SIZE_SMALL);
     pravila.setFillColor(sf::Color(111, 78, 55));
     pravila.setStyle(sf::Text::Style::Regular);
-    pravila.setPosition(sf::Vector2f(prozor.getSize().x / 2 - pravila.getLocalBounds().width / 2, naslov.getCharacterSize() + 30));
+    pravila.setPosition(sf::Vector2f(prozor.getSize().x / 2 - pravila.getLocalBounds().width / 2, prozor.getSize().y / 2 - naslov.getCharacterSize() - pravila.getLocalBounds().height / 2));
+
+    cout << "prozor size " << racunalo.width << " " << racunalo.height << endl;
 
     // napravimo gumb start koji se sastoji od texta i pravokutnika
     gumbText.setFont(font);
