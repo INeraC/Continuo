@@ -43,10 +43,13 @@ int main()
     naslov.setStyle(sf::Text::Style::Bold);
     naslov.setPosition(prozor.getSize().x / 2 - naslov.getLocalBounds().width / 2, 0);
 
-    // pravila.setFont(font);
-    // pravila.setString("Pomiješajte pločice i stavite ih licem prema dolje. Uzmite gornju pločicu i stavite je licem prema gore na stol. U svakom potezu igrač koji je na potezu uzima gornju pločicu i dodaje je na stol. Nova pločica mora dodirivati, bez preklapanja, jednu ili više postojećih pločica i mora biti poravnata s kvadratićima na pločicama. Igrač osvaja bod za svaki kvadratić u obojenim područjima koja su uvećana novom pločicom. Područje čini niz kvadratića iste boje, pri čemu se računaju kvadratići na postojećim pločicama kao i na novoj pločici.");
-    // pravila.setFillColor(sf::Color(255, 239, 222));
-    // pravila.setPosition(sf::Vector2f(0.f, naslov.getLocalBounds().height * 4 / 3.f));
+    //napravimo pravila
+    pravila.setFont(font);
+    pravila.setString("Kako ce cijeli tekst stati i kako cemo potrefiti razmake?");
+    pravila.setCharacterSize(50);
+    pravila.setFillColor(sf::Color(111, 78, 55));
+    pravila.setStyle(sf::Text::Style::Regular);
+    pravila.setPosition(sf::Vector2f(0, naslov.getLocalBounds().height * 7 / 3.f));
 
     // napravimo gumb start koji se sastoji od texta i pravokutnika
     gumbText.setFont(font);
@@ -171,10 +174,13 @@ int main()
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && polje.provjeriPoziciju(mousePos, gridStats))
         {
             sf::Vector2i koordinate = polje.getKoordinate(mousePos, gridStats);
-            int tr = polje.postaviPlocicu(koordinate.x + 2, koordinate.y + 1, tr_plocica);
+            polje.postaviPlocicu(koordinate.x + 2, koordinate.y + 1, tr_plocica);
+            int tr = polje.racunajBodoveZaPlocicu(koordinate.x + 2, koordinate.y + 1, tr_plocica);
             tr_plocica = plocice.back();
             plocice.pop_back();
-            cout << tr << endl;
+            cout << tr << endl;            
+            polje.greedyPozicija(gridStats,tr_plocica);
+
         }
 
         // pomicanje ekrana

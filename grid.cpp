@@ -57,22 +57,11 @@ void grid::nullirajVisited()
     }
 }
 
-int grid::postaviPlocicu(int x, int y, plocica pl)
+int grid::racunajBodoveZaPlocicu(int x, int y, plocica pl)
 {
-    int i, j, bx = 0, by = 0, sum = 0;
+    int i, j, sum = 0;
     // cistimo polje visited
     nullirajVisited();
-    // postavljamo plocicu na polje
-    for (i = x - 2; i < x + 2; i++)
-    {
-        for (j = y - 1; j < y + 3; j++)
-        {
-            this->polje[i][j] = pl.polje[bx][by];
-            by++;
-        }
-        by = 0;
-        bx++;
-    }
     // racunamo bodove
     // jako bitno je napomenuti da smo se u cijelom kodu s i kretali po stupcima, a s j po retcima pa su varijable
     // i i j zamijenjene u odnosu na inace
@@ -114,6 +103,22 @@ int grid::postaviPlocicu(int x, int y, plocica pl)
     return sum;
 }
 
+void grid::postaviPlocicu(int x, int y, plocica pl)
+{
+    int i, j, bx = 0, by = 0;
+    // postavljamo plocicu na polje
+    for (i = x - 2; i < x + 2; i++)
+    {
+        for (j = y - 1; j < y + 3; j++)
+        {
+            this->polje[i][j] = pl.polje[bx][by];
+            by++;
+        }
+        by = 0;
+        bx++;
+    }
+}
+
 int grid::dfs(int x, int y, int boja)
 {
 
@@ -126,7 +131,7 @@ int grid::dfs(int x, int y, int boja)
         return 0;
 
     visited[x][y] = 1;
-    cout << x << " " << y << endl;
+    //cout << x << " " << y << endl;
     return 1 + dfs(x - 1, y, boja) + dfs(x + 1, y, boja) + dfs(x, y - 1, boja) + dfs(x, y + 1, boja);
 }
 
@@ -230,22 +235,29 @@ bool grid::provjeriPoziciju(sf::Vector2i &mousePos, sf::Vector2f &gridStats)
 
     return false;
 }
-
-sf::Vector2i grid::greedyPozicija()
+void grid::greedyPozicija (sf::Vector2f &gridStats, plocica pl)
 {
-    int i, j;
+    int i, j, max_br_bodova = 0, tr_bodovi, posx, posy;
+    
     for (i = 0; i < 332; i++)
     {
         for (j = 0; j < 332; j++)
         {
             sf::Vector2i mousepos(i, j);
-            sf::Vector2f gridstats;
-            if (provjeriPoziciju(mousepos, gridstats))
+            if (provjeriPoziciju(mousepos, gridStats))
             {
-
+                cout<<i+2<<" "<<j+1<<endl;
+                tr_bodovi = racunajBodoveZaPlocicu(i+2,j+1,pl);
+                if (max_br_bodova < tr_bodovi){
+                    posx = i;
+                    posy = j;
+                    max_br_bodova = tr_bodovi;
+                }
             }
         }
     }
+    cout<<max_br_bodova<<endl;
+    postaviPlocicu (posx, posy, pl);
 }
 
 // funkcije za animaciju polja

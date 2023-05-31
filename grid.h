@@ -25,12 +25,13 @@ public:
     void setVelicina(int brKockica);
     void setPozicija(sf::Vector2i pocetna_pozicija);
 
-    int postaviPlocicu(int x, int y, plocica pl);
+    void postaviPlocicu(int x, int y, plocica pl);
     void ispisiGrid(int x, int y);
     sf::Vector2f crtajGrid(sf::RenderWindow &prozor);
     bool provjeriPoziciju(sf::Vector2i &mousePos, sf::Vector2f &gridStats);
     sf::Vector2i getKoordinate(sf::Vector2i &mousePos, sf::Vector2f &gridtats);
-    sf::Vector2i greedyPozicija ();
+    int racunajBodoveZaPlocicu(int x, int y, plocica pl);
+    void greedyPozicija (sf::Vector2f &gridStats, plocica pl);
 
     void zoomIn();
     void zoomOut();
