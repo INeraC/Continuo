@@ -8,6 +8,7 @@
 
 #define FONT_SIZE_SMALL 0.012 * sf::VideoMode::getDesktopMode().width
 #define FONT_SIZE_BIG 0.03 * sf::VideoMode::getDesktopMode().width
+#define FONT_KRAJ 0.04 * sf::VideoMode::getDesktopMode().width
 #define DEFAULT_SIZE_PRAVILA sf::VideoMode::getDesktopMode().width * 2 / 3, sf::VideoMode::getDesktopMode().height * 4 / 5
 #define DEFAULT_SIZE_NOT_FULL_SCREEN sf::VideoMode::getDesktopMode().height * 4 / 5, sf::VideoMode::getDesktopMode().height * 4 / 5
 #define DEFAULT_SIZE_FULL_SCREEN sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height
@@ -28,6 +29,12 @@ int main()
     sf::Text gumbText;
     sf::Font font;
     sf::Text pravila;
+    sf::Text igrac;
+    sf::Text igracRez;
+    sf::Text botko;
+    sf::Text botkoRez;
+    sf::Text kraj;
+    sf::Text smallRez;
 
     // ucitavanje fonta
     if (!font.loadFromFile("./Merriweather/Merriweather-Black.ttf"))
@@ -77,7 +84,7 @@ int main()
     }
 
     // koristit cemo varijablu u slucaju promjene velicine prozora
-    bool changeProzor = false, crtajObrub = false, krajIgre = false;
+    bool changeProzor = false, crtajObrub = false, krajIgre = false, smallScreen = false;
 
     // generiramo svoje plocice i  konstruktorom inicijaliziramo pocetni pogled
     vector<plocica> plocice = generiraj();
@@ -88,6 +95,47 @@ int main()
     // uzimanje prve plocice
     plocica tr_plocica = plocice.back();
     plocice.pop_back();
+
+    // inicijalizacija varijabli za brojanje bodova
+    int rac = 0, play = 0;
+
+    // inicijalizacija teksta
+    igrac.setFont(font);
+    igrac.setString("IGRAC:");
+    igrac.setCharacterSize(FONT_SIZE_BIG);
+    igrac.setFillColor(sf::Color::Black);
+    igrac.setStyle(sf::Text::Style::Bold);
+
+    igracRez.setFont(font);
+    igracRez.setString(to_string(play));
+    igracRez.setCharacterSize(FONT_SIZE_BIG);
+    igracRez.setFillColor(sf::Color::Black);
+    igracRez.setStyle(sf::Text::Style::Regular);
+
+    botko.setFont(font);
+    botko.setString("BOTKO:");
+    botko.setCharacterSize(FONT_SIZE_BIG);
+    botko.setFillColor(sf::Color::Black);
+    botko.setStyle(sf::Text::Style::Bold);
+
+    botkoRez.setFont(font);
+    botkoRez.setString(to_string(rac));
+    botkoRez.setCharacterSize(FONT_SIZE_BIG);
+    botkoRez.setFillColor(sf::Color::Black);
+    botkoRez.setStyle(sf::Text::Style::Regular);
+
+    // tekst kraj igre
+    kraj.setFont(font);
+    kraj.setString("Kraj igre!!!");
+    kraj.setCharacterSize(FONT_KRAJ);
+    kraj.setFillColor(sf::Color::Black);
+    kraj.setStyle(sf::Text::Style::Bold);
+
+    // small rezultat
+    smallRez.setFont(font);
+    smallRez.setCharacterSize(FONT_KRAJ);
+    smallRez.setFillColor(sf::Color::Black);
+    smallRez.setStyle(sf::Text::Style::Bold);
 
     while (prozor.isOpen())
     {
@@ -122,7 +170,7 @@ int main()
                 }
             }
             // provjera je li plocica u poziciji za polaganje na polje
-            if (d.type == sf::Event::MouseMoved && changeProzor && polje.provjeriPoziciju(mousePos, gridStats))
+            if (d.type == sf::Event::MouseMoved && changeProzor && polje.provjeriPoziciju(mousePos, gridStats) && !krajIgre)
             {
                 crtajObrub = true;
             }
@@ -150,6 +198,7 @@ int main()
         {
             changeProzor = true;
             prozor.create(sf::VideoMode(DEFAULT_SIZE_FULL_SCREEN), "Continuo", sf::Style::Fullscreen);
+            igrac.setPosition(gridStats.y / 2 - igrac.getLocalBounds().width / 2, prozor.getSize().y / 2);
         }
 
         // s Esc cemo izlaziti van iz igrice ako ne zelimo zavrsiti partiju
@@ -158,12 +207,14 @@ int main()
             sf::Vector2u sz(DEFAULT_SIZE_NOT_FULL_SCREEN);
             prozor.create(sf::VideoMode(DEFAULT_SIZE_NOT_FULL_SCREEN), "Continuo", sf::Style::Close | sf::Style::Titlebar);
             prozor.setPosition(pozicija);
+            smallScreen = true;
         }
 
         // F11 mijenja velicinu prozora
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::F11) && changeProzor)
         {
             prozor.create(sf::VideoMode(DEFAULT_SIZE_FULL_SCREEN), "Continuo", sf::Style::Fullscreen);
+            smallScreen = false;
         }
         // plocica se rotira
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
@@ -171,19 +222,23 @@ int main()
             while (usleep(100))
                 ;
             tr_plocica.rotiraj();
+            while (usleep(100))
+
+                ;
         }
 
         // stavljanje plocice na polje
-        if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && polje.provjeriPoziciju(mousePos, gridStats))
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && polje.provjeriPoziciju(mousePos, gridStats) && !krajIgre)
         {
             sf::Vector2i koordinate = polje.getKoordinate(mousePos, gridStats);
             polje.postaviPlocicu(koordinate.x + 2, koordinate.y + 1, tr_plocica);
-            int tr = polje.racunajBodoveZaPlocicu(koordinate.x + 2, koordinate.y + 1, tr_plocica);
+            play += polje.racunajBodoveZaPlocicu(koordinate.x + 2, koordinate.y + 1, tr_plocica);
+            igracRez.setString(to_string(play));
             tr_plocica = plocice.back();
             plocice.pop_back();
-            cout << tr << endl;
 
-            polje.greedyPozicija(gridStats, tr_plocica);
+            rac += polje.greedyPozicija(gridStats, tr_plocica);
+            botkoRez.setString(to_string(rac));
             tr_plocica = plocice.back();
             plocice.pop_back();
         }
@@ -206,24 +261,50 @@ int main()
             polje.moveRight();
         }
         // stvara prikaz prozora
-        if (krajIgre)
-        {
-        }
-        else if (!changeProzor)
+
+        if (!changeProzor)
         {
             prozor.clear(sf::Color(255, 239, 222));
             prozor.draw(naslov);
             prozor.draw(gumbStart);
             prozor.draw(gumbText);
+            botkoRez.setFont(font);
+            botkoRez.setString(to_string(rac));
+            botkoRez.setCharacterSize(FONT_SIZE_BIG);
+            botkoRez.setFillColor(sf::Color::Black);
+            botkoRez.setStyle(sf::Text::Style::Regular);
             prozor.draw(pravila);
         }
         else
         {
+            igrac.setPosition(gridStats.y / 2 - igrac.getLocalBounds().width / 2, prozor.getSize().y / 2 - igrac.getGlobalBounds().height);
+            igracRez.setPosition(gridStats.y / 2 - igrac.getLocalBounds().width / 2, prozor.getSize().y / 2 + 10);
+            botko.setPosition(gridStats.x * polje.getVelicina() + gridStats.y + gridStats.y / 2 - botko.getLocalBounds().width / 2, prozor.getSize().y / 2 - botko.getGlobalBounds().height);
+            botkoRez.setPosition(gridStats.x * polje.getVelicina() + gridStats.y + gridStats.y / 2 - botko.getLocalBounds().width / 2, prozor.getSize().y / 2 + 10);
             prozor.clear(sf::Color::White);
             gridStats = polje.crtajGrid(prozor);
             if (crtajObrub)
                 tr_plocica.crtajRub(prozor, gridStats, mousePos);
-            tr_plocica.crtajPlocicu(prozor, gridStats, mousePos);
+            if (!krajIgre)
+                tr_plocica.crtajPlocicu(prozor, gridStats, mousePos);
+            if (!smallScreen)
+            {
+                prozor.draw(igrac);
+                prozor.draw(igracRez);
+                prozor.draw(botko);
+                prozor.draw(botkoRez);
+            }
+            if (plocice.empty())
+            {
+                krajIgre = true;
+                prozor.draw(kraj);
+                if (smallScreen)
+                {
+                    smallRez.setString("(I) " + to_string(play) + "  :  " + to_string(rac) + " (B)");
+                    smallRez.setPosition(prozor.getSize().x / 2 - smallRez.getLocalBounds().width / 2, prozor.getSize().y - smallRez.getLocalBounds().height * 2);
+                    prozor.draw(smallRez);
+                }
+            }
         }
         prozor.display();
     }

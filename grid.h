@@ -33,7 +33,7 @@ public:
     bool provjeriPoziciju(sf::Vector2i &plocicaPos);
     sf::Vector2i getKoordinate(sf::Vector2i &mousePos, sf::Vector2f &gridtats);
     int racunajBodoveZaPlocicu(int x, int y, plocica pl);
-    void greedyPozicija (sf::Vector2f &gridStats, plocica pl);
+    int greedyPozicija(sf::Vector2f &gridStats, plocica pl);
 
     void zoomIn();
     void zoomOut();

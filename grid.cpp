@@ -279,7 +279,7 @@ bool grid::provjeriPoziciju(sf::Vector2i &plocicaPos)
     return false;
 }
 
-void grid::greedyPozicija(sf::Vector2f &gridStats, plocica pl)
+int grid::greedyPozicija(sf::Vector2f &gridStats, plocica pl)
 {
     int i, j, max_br_bodova = -1, tr_bodovi, posx, posy;
     bool rotirana = false;
@@ -322,10 +322,11 @@ void grid::greedyPozicija(sf::Vector2f &gridStats, plocica pl)
             }
         }
     }
-    cout << max_br_bodova << endl;
+    // cout << max_br_bodova << endl;
     if (rotirana)
         pl.rotiraj();
     postaviPlocicu(posx, posy, pl);
+    return max_br_bodova;
 }
 
 // funkcije za animaciju polja
