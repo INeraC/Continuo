@@ -1,0 +1,21 @@
+Igra Continuo igra se tako da svaki igrac na svom potezu postavlja jednu plocicu /n
+na veliko kvadratno polje, pri cemu ju moze rotirati. Novo postavljena plocica /n
+mora dodirivati, bez preklapanja, jednu ili vise postojecih plocica i mora  /n
+biti poravnata s kvadraticima na plocicama. Igrac osvaja bod za svaki kvadratic/n
+na novopostavljenoj plocici spojen s istoobojanim kvadraticima na vec /n
+postavljenim plocicama, pri cemu se na broj vec osvojenih bodova dodaje broj /n
+kvadratica koji cine neprekidno podrucje s pocetkom na novopostavljenoj /n
+plocici. Neprekidno podrucje cini niz spojenih kvadratica u istoj boji. /n
+/n
+Igra se igra sve dok se ne potroše sve plocice, a pobjednik je onaj koji osvoji /n
+vise bodova. /n
+ /n
+UPUTA: /n
+Ako ne zelis igrati u fullscreenu, stisni tipku ESC, a ako se pozelis vratiti /n
+u fullscreen mozes stisnuti tipku F11 i tako mijenjati velicinu zaslona. Plocica /n
+se rotira pritiskom tipke r. Nadalje, po polju se mozes kretati strelicama, a /n
+postoji opcija i zoomiranja i odzoomiranja kako bi kao igrac mogao/la imati /n
+pregled nad cijelom situacijom./n
+/n
+U ovoj verziji igra se protiv racunala i jako je tesko pobijediti, stoga pokreni /n
+igru i pokusaj nadmudriti racunalo! Sretno!
