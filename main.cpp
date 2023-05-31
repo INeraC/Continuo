@@ -4,7 +4,8 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <algorithm>
-#include <unistd.h>
+#include <chrono>
+#include <thread>
 
 
 #define FONT_SIZE_SMALL 0.012 * sf::VideoMode::getDesktopMode().width
@@ -234,8 +235,7 @@ int main()
         //! plocica se rotira
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
         {
-            while (usleep(100))
-                ;
+            std::this_thread::sleep_for(std::chrono::microseconds(100));
             tr_plocica.rotiraj();
             while (usleep(100))
 
@@ -328,4 +328,5 @@ int main()
         }
         prozor.display();
     }
+    return 0;
 }
