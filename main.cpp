@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <unistd.h>
 
-#define FONT_SIZE_SMALL 0.01 * sf::VideoMode::getDesktopMode().width
+#define FONT_SIZE_SMALL 0.012 * sf::VideoMode::getDesktopMode().width
 #define FONT_SIZE_BIG 0.03 * sf::VideoMode::getDesktopMode().width
 #define DEFAULT_SIZE_PRAVILA sf::VideoMode::getDesktopMode().width * 2 / 3, sf::VideoMode::getDesktopMode().height * 4 / 5
 #define DEFAULT_SIZE_NOT_FULL_SCREEN sf::VideoMode::getDesktopMode().height * 4 / 5, sf::VideoMode::getDesktopMode().height * 4 / 5
