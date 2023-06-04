@@ -7,7 +7,6 @@
 #include <chrono>
 #include <thread>
 
-
 #define FONT_SIZE_SMALL 0.012 * sf::VideoMode::getDesktopMode().width
 #define FONT_SIZE_BIG 0.03 * sf::VideoMode::getDesktopMode().width
 #define FONT_KRAJ 0.04 * sf::VideoMode::getDesktopMode().width
@@ -15,9 +14,7 @@
 #define DEFAULT_SIZE_NOT_FULL_SCREEN sf::VideoMode::getDesktopMode().height * 4 / 5, sf::VideoMode::getDesktopMode().height * 4 / 5
 #define DEFAULT_SIZE_FULL_SCREEN sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height
 
-
 using namespace std;
-
 
 int main()
 {
@@ -27,7 +24,6 @@ int main()
     prozor.create(sf::VideoMode(DEFAULT_SIZE_PRAVILA), "Continuo pravila");
     sf::Vector2i pozicija(racunalo.width / 2 - prozor.getSize().x / 2, racunalo.height / 2 - prozor.getSize().y / 2 * 3);
     prozor.setPosition(pozicija);
-
 
     //! potrebni alati na prozoru
     sf::Text naslov;
@@ -41,14 +37,12 @@ int main()
     sf::Text kraj;
     sf::Text smallRez;
 
-
     //! ucitavanje fonta
     if (!font.loadFromFile("./Merriweather/Merriweather-Black.ttf"))
     {
         cout << "ERROR" << endl;
         system("pause");
     }
-
 
     //! napravimo naslov
     naslov.setFont(font);
@@ -58,7 +52,6 @@ int main()
     naslov.setStyle(sf::Text::Style::Bold);
     naslov.setPosition(prozor.getSize().x / 2 - naslov.getLocalBounds().width / 2, 0);
 
-
     //! napravimo pravila
     pravila.setFont(font);
     pravila.setString("Igra Continuo igra se tako da svaki igrac na svom potezu postavlja jednu plocicu \n na veliko kvadratno polje, pri cemu ju moze rotirati. Novo postavljena plocica \n mora dodirivati, bez preklapanja, jednu ili vise postojecih plocica i mora  \nbiti poravnata s kvadraticima na plocicama. Igrac osvaja bod za svaki kvadratic\nna novopostavljenoj plocici spojen s istoobojanim kvadraticima na vec \npostavljenim plocicama, pri cemu se na broj vec osvojenih bodova dodaje broj \nkvadratica koji cine neprekidno podrucje s pocetkom na novopostavljenoj \nplocici. Neprekidno podrucje cini niz spojenih kvadratica u istoj boji. \n\nIgra se igra sve dok se ne potrose sve plocice, a pobjednik je onaj koji osvoji \nvise bodova. \n\nUPUTA: \nAko ne zelis igrati u fullscreenu, stisni tipku ESC, a ako se pozelis vratiti \nu fullscreen mozes stisnuti tipku F11 i tako mijenjati velicinu zaslona. Plocica \nse rotira pritiskom tipke r. Nadalje, po polju se mozes kretati strelicama, a \npostoji opcija i zoomiranja i odzoomiranja kako bi kao igrac mogao/la imati \npregled nad cijelom situacijom.\n\nU ovoj verziji igra se protiv racunala i jako je tesko pobijediti, stoga pokreni \nigru i pokusaj nadmudriti racunalo! Sretno!");
@@ -66,7 +59,6 @@ int main()
     pravila.setFillColor(sf::Color(111, 78, 55));
     pravila.setStyle(sf::Text::Style::Regular);
     pravila.setPosition(sf::Vector2f(prozor.getSize().x / 2 - pravila.getLocalBounds().width / 2, prozor.getSize().y / 2 - naslov.getCharacterSize() - pravila.getLocalBounds().height / 2));
-
 
     //! napravimo gumb start koji se sastoji od texta i pravokutnika
     gumbText.setFont(font);
@@ -79,7 +71,6 @@ int main()
     gumbStart.setFillColor(sf::Color(111, 78, 55));
     gumbStart.setPosition(sf::Vector2f(prozor.getSize().x / 2.f - gumbStart.getLocalBounds().width / 2.f, prozor.getSize().y * 1.f - naslov.getCharacterSize() * 2.f));
 
-
     //! bavimo se kursorom i ucitavamo kursor
     sf::Cursor ruka, strelica;
     if (!ruka.loadFromSystem(sf::Cursor::Hand))
@@ -91,10 +82,8 @@ int main()
         cout << "Could not load arrow cursor" << endl;
     }
 
-
     //! koristit cemo varijablu u slucaju promjene velicine prozora
     bool changeProzor = false, crtajObrub = false, krajIgre = false, smallScreen = false;
-
 
     //! generiramo svoje plocice i  konstruktorom inicijaliziramo pocetni pogled
     vector<plocica> plocice = generiraj();
@@ -102,15 +91,12 @@ int main()
     plocice.pop_back();
     sf::Vector2f gridStats(-1.0f, -1.0f);
 
-
     //! uzimanje prve plocice
     plocica tr_plocica = plocice.back();
     plocice.pop_back();
 
-
     //! inicijalizacija varijabli za brojanje bodova
     int rac = 0, play = 0;
-
 
     //! inicijalizacija teksta
     igrac.setFont(font);
@@ -137,7 +123,6 @@ int main()
     botkoRez.setFillColor(sf::Color::Black);
     botkoRez.setStyle(sf::Text::Style::Regular);
 
-
     //! tekst kraj igre
     kraj.setFont(font);
     kraj.setString("Kraj igre!!!");
@@ -145,13 +130,11 @@ int main()
     kraj.setFillColor(sf::Color::Black);
     kraj.setStyle(sf::Text::Style::Bold);
 
-
     //! small rezultat
     smallRez.setFont(font);
     smallRez.setCharacterSize(FONT_KRAJ);
     smallRez.setFillColor(sf::Color::Black);
     smallRez.setStyle(sf::Text::Style::Bold);
-
 
     while (prozor.isOpen())
     {
@@ -235,11 +218,8 @@ int main()
         //! plocica se rotira
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
         {
-            std::this_thread::sleep_for(std::chrono::microseconds(100));
+            std::this_thread::sleep_for(std::chrono::microseconds(200));
             tr_plocica.rotiraj();
-            while (usleep(100))
-
-                ;
         }
 
         //! stavljanje plocice na polje
