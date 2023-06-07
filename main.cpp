@@ -36,6 +36,8 @@ int main()
     sf::Text botkoRez;
     sf::Text kraj;
     sf::Text smallRez;
+    sf::Text potez;
+    sf::Text potezBr;
 
     //! ucitavanje fonta
     if (!font.loadFromFile("./Merriweather/Merriweather-Black.ttf"))
@@ -93,10 +95,9 @@ int main()
 
     //! uzimanje prve plocice
     plocica tr_plocica = plocice.back();
-    plocice.pop_back();
 
-    //! inicijalizacija varijabli za brojanje bodova
-    int rac = 0, play = 0;
+    //! inicijalizacija varijabli za brojanje bodova i poteza
+    int rac = 0, play = 0, brPoteza = 1;
 
     //! inicijalizacija teksta
     igrac.setFont(font);
@@ -123,6 +124,18 @@ int main()
     botkoRez.setFillColor(sf::Color::Black);
     botkoRez.setStyle(sf::Text::Style::Regular);
 
+    potez.setFont(font);
+    potez.setString("Potez broj:");
+    potez.setCharacterSize(FONT_SIZE_BIG);
+    potez.setFillColor(sf::Color::Black);
+    potez.setStyle(sf::Text::Style::Bold);
+
+    potezBr.setFont(font);
+    potezBr.setCharacterSize(FONT_SIZE_BIG);
+    potezBr.setFillColor(sf::Color::Black);
+    potezBr.setStyle(sf::Text::Style::Bold);
+    potezBr.setString("1");
+
     //! tekst kraj igre
     kraj.setFont(font);
     kraj.setString("Kraj igre!!!");
@@ -135,7 +148,6 @@ int main()
     smallRez.setCharacterSize(FONT_KRAJ);
     smallRez.setFillColor(sf::Color::Black);
     smallRez.setStyle(sf::Text::Style::Bold);
-
     while (prozor.isOpen())
     {
         //! biramo pozicije na prozoru za gumb, mis
@@ -228,14 +240,20 @@ int main()
             sf::Vector2i koordinate = polje.getKoordinate(mousePos, gridStats);
             polje.postaviPlocicu(koordinate.x + 2, koordinate.y + 1, tr_plocica);
             play += polje.racunajBodoveZaPlocicu(koordinate.x + 2, koordinate.y + 1, tr_plocica);
+            brPoteza++;
+            potezBr.setString(to_string(brPoteza));
             igracRez.setString(to_string(play));
             tr_plocica = plocice.back();
             plocice.pop_back();
-
-            rac += polje.greedyPozicija(gridStats, tr_plocica);
-            botkoRez.setString(to_string(rac));
-            tr_plocica = plocice.back();
-            plocice.pop_back();
+            if (!plocice.empty())
+            {
+                rac += polje.greedyPozicija(gridStats, tr_plocica);
+                brPoteza++;
+                botkoRez.setString(to_string(rac));
+                potezBr.setString(to_string(brPoteza));
+                tr_plocica = plocice.back();
+                plocice.pop_back();
+            }
         }
 
         //! pomicanje ekrana
@@ -263,11 +281,6 @@ int main()
             prozor.draw(naslov);
             prozor.draw(gumbStart);
             prozor.draw(gumbText);
-            botkoRez.setFont(font);
-            botkoRez.setString(to_string(rac));
-            botkoRez.setCharacterSize(FONT_SIZE_BIG);
-            botkoRez.setFillColor(sf::Color::Black);
-            botkoRez.setStyle(sf::Text::Style::Regular);
             prozor.draw(pravila);
         }
         else
@@ -276,6 +289,8 @@ int main()
             igracRez.setPosition(gridStats.y / 2 - igrac.getLocalBounds().width / 2, prozor.getSize().y / 2 + 10);
             botko.setPosition(gridStats.x * polje.getVelicina() + gridStats.y + gridStats.y / 2 - botko.getLocalBounds().width / 2, prozor.getSize().y / 2 - botko.getGlobalBounds().height);
             botkoRez.setPosition(gridStats.x * polje.getVelicina() + gridStats.y + gridStats.y / 2 - botko.getLocalBounds().width / 2, prozor.getSize().y / 2 + 10);
+            potez.setPosition(gridStats.x * polje.getVelicina() + gridStats.y + gridStats.y / 2 - potez.getLocalBounds().width / 2, 0);
+            potezBr.setPosition(gridStats.x * polje.getVelicina() + gridStats.y + gridStats.y / 2 - potez.getLocalBounds().width / 2, potez.getCharacterSize());
             prozor.clear(sf::Color::White);
             gridStats = polje.crtajGrid(prozor);
 
@@ -291,6 +306,8 @@ int main()
                 prozor.draw(igracRez);
                 prozor.draw(botko);
                 prozor.draw(botkoRez);
+                prozor.draw(potez);
+                prozor.draw(potezBr);
             }
 
             if (plocice.empty())
